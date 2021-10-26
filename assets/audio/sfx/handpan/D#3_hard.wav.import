@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/D#3_hard.wav-ec95af045fce3275d4b3bffe4b2ff0fb.sample"
+
+[deps]
+
+source_file="res://assets/audio/sfx/handpan/D#3_hard.wav"
+dest_files=[ "res://.import/D#3_hard.wav-ec95af045fce3275d4b3bffe4b2ff0fb.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
