@@ -1,5 +1,8 @@
 extends KinematicBody2D
 
+# The signal param must be dynamically typed
+signal song_played(song)
+
 enum Notes {
     A3,
     A4_SHARP,
@@ -12,6 +15,20 @@ enum Notes {
 
 func _physics_process(delta: float) -> void:
     var pressedKey: int = _get_played_note()
+    _change_song(pressedKey)
+
+# TODO: In the future, refactor to be like world.gd/_change_weather and emit the local var
+func _change_song(song: int) -> void:
+    # TODO: Introduce Song enum and change here too!
+    match song:
+        Notes.A3:
+            emit_signal("song_played", "sunny")
+        Notes.D3:
+            emit_signal("song_played", "windy")
+        Notes.G3:
+            emit_signal("song_played", "rainy")
+        _:
+            pass
 
 # TODO: Condense the inputs to needed inputs only in future commit.
 func _get_played_note() -> int:
