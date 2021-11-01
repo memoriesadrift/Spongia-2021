@@ -1,0 +1,6 @@
+Názov tímu: CS Hustle
+Názov hry: ---
+Vývojové prostredie a prostriedky: Godot, GDScript
+
+Hudba:
+Handpan / Hang Drum Samples: https://www.subaqueousmusic.com/tag/free-hang-drum/
