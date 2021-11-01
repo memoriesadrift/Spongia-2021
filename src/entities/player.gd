@@ -13,6 +13,10 @@ enum Notes {
     NONE,
     }
 
+enum Songs {SUNNY, RAINY, WINDY, SNOWY}
+
+var currentSong: int = Songs.SUNNY
+
 func _physics_process(delta: float) -> void:
     var pressedKey: int = _get_played_note()
     _change_song(pressedKey)
@@ -22,13 +26,38 @@ func _change_song(song: int) -> void:
     # TODO: Introduce Song enum and change here too!
     match song:
         Notes.A3:
+            _change_Song(Songs.SUNNY)
             emit_signal("song_played", "sunny")
         Notes.D3:
+            _change_Song(Songs.WINDY)
             emit_signal("song_played", "windy")
         Notes.G3:
+            _change_Song(Songs.RAINY)
             emit_signal("song_played", "rainy")
         _:
             pass
+
+# Helper function to safely assign to currentWeather
+func _change_Song(to: int) -> void:
+    if (to == currentSong or to > 0):
+        pass
+    
+    var newSong = currentSong
+    
+    match (to):
+        Songs.SUNNY:
+            currentSong = Songs.SUNNY
+        Songs.RAINY:
+            currentSong = Songs.RAINY
+        Songs.WINDY:
+            currentSong = Songs.WINDY
+        Songs.SNOWY:
+            currentSong = Songs.SNOWY
+        _:
+            pass
+            
+    currentSong = newSong
+
 
 # TODO: Condense the inputs to needed inputs only in future commit.
 func _get_played_note() -> int:
