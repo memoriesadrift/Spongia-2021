@@ -17,6 +17,7 @@ func _ready() -> void:
 
 func _on_WorldTimer_timeout() -> void:
     _adjust_weatherDuration(currentWeather)
+    print(weatherEffectAccumulators)
 
 func _on_Player_song_played(song) -> void: # song MUST be dynamically typed
     _change_Weather(_song_signal_to_weather(song))
@@ -25,18 +26,9 @@ func _on_Player_song_played(song) -> void: # song MUST be dynamically typed
 func _adjust_weatherDuration(weather: int) -> void:
     weatherEffectAccumulators[weather] += 1
     
-    if (weather != Weather.SUNNY):
-        if (weatherEffectAccumulators[Weather.SUNNY] > 0):
-            weatherEffectAccumulators[Weather.SUNNY] -= 1
-    if (weather != Weather.RAINY):
-        if (weatherEffectAccumulators[Weather.RAINY] > 0):
-            weatherEffectAccumulators[Weather.RAINY] -= 1
-    if (weather != Weather.WINDY):
-        if (weatherEffectAccumulators[Weather.WINDY] > 0):
-            weatherEffectAccumulators[Weather.WINDY] -= 1
-    if (weather != Weather.SNOWY):
-        if (weatherEffectAccumulators[Weather.SNOWY] > 0):
-            weatherEffectAccumulators[Weather.SNOWY] -= 1
+    for key in weatherEffectAccumulators:
+        if(weather != key and weatherEffectAccumulators[key] > 0):
+            weatherEffectAccumulators[key] -= 1
 
 # Helper function to safely assign to currentWeather
 func _change_Weather(to: int) -> void:
