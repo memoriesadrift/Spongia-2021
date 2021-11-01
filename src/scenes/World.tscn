@@ -24,4 +24,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="WorldTimer" type="Timer" parent="."]
+
 [connection signal="song_played" from="Player" to="." method="_on_Player_song_played"]
+[connection signal="timeout" from="WorldTimer" to="." method="_on_WorldTimer_timeout"]
