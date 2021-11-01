@@ -19,10 +19,10 @@ var currentSong: int = Songs.SUNNY
 
 func _physics_process(delta: float) -> void:
     var pressedKey: int = _get_played_note()
-    _change_song(pressedKey)
+    _send_song_signal(pressedKey)
 
 # TODO: In the future, refactor to be like world.gd/_change_weather and emit the local var
-func _change_song(song: int) -> void:
+func _send_song_signal(song: int) -> void:
     # TODO: Introduce Song enum and change here too!
     match song:
         Notes.A3:
