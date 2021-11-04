@@ -17,7 +17,6 @@ func _ready() -> void:
 
 func _on_WorldTimer_timeout() -> void:
     _adjust_weatherDuration(currentWeather)
-    print(weatherEffectAccumulators)
 
 func _on_Player_song_played(song) -> void: # song MUST be dynamically typed
     _change_Weather(_song_signal_to_weather(song))
@@ -32,8 +31,8 @@ func _adjust_weatherDuration(weather: int) -> void:
 
 # Helper function to safely assign to currentWeather
 func _change_Weather(to: int) -> void:
-    if (to == currentWeather or to > 0):
-        pass
+    if (to == currentWeather or to < 0):
+        return
     
     var newWeather = currentWeather
     
@@ -47,8 +46,7 @@ func _change_Weather(to: int) -> void:
         Weather.SNOWY:
             newWeather = Weather.SNOWY
         _:
-            pass
-            
+            pass 
     currentWeather = newWeather
 
 # Helper function to convert the signal from player to our enum safely.
