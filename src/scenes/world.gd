@@ -31,8 +31,8 @@ func _adjust_weatherDuration(weather: int) -> void:
 
 # Helper function to safely assign to currentWeather
 func _change_Weather(to: int) -> void:
-    if (to == currentWeather or to > 0):
-        pass
+    if (to == currentWeather or to < 0):
+        return
     
     var newWeather = currentWeather
     
@@ -46,8 +46,7 @@ func _change_Weather(to: int) -> void:
         Weather.SNOWY:
             newWeather = Weather.SNOWY
         _:
-            pass
-            
+            pass 
     currentWeather = newWeather
 
 # Helper function to convert the signal from player to our enum safely.
