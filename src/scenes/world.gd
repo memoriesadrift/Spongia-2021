@@ -38,8 +38,7 @@ func _check_weather_effect() -> void:
                 Weather.WINDY:
                     weatherLabel.add_text("hurricane")
                 Weather.SNOWY:
-                    weatherLabel.add_text("snow-in")
-            
+                    weatherLabel.add_text("snow-in")            
 
 # Helper function to adjust weather durations based on current weather
 func _adjust_weatherDuration(weather: int) -> void:
