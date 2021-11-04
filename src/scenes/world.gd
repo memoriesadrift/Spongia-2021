@@ -1,8 +1,11 @@
 extends Node2D
 
 enum Weather {SUNNY, RAINY, WINDY, SNOWY}
+enum Seasons {SPRING, SUMMER, AUTUMN, WINTER}
 
+var currentSeason: int = Seasons.SPRING
 var currentWeather: int = Weather.SUNNY
+var gameTime: int = 0
 var weatherEffectAccumulators: Dictionary = {
     Weather.SUNNY: 0,
     Weather.RAINY: 0,
@@ -16,7 +19,7 @@ func _ready() -> void:
     worldTimer.start()
 
 func _on_WorldTimer_timeout() -> void:
-    _adjust_weatherDuration(currentWeather)
+    _advance_game_time()
 
 func _on_Player_song_played(song) -> void: # song MUST be dynamically typed
     _change_Weather(_song_signal_to_weather(song))
@@ -63,3 +66,19 @@ func _song_signal_to_weather(song: String) -> int:
         _:
             assert(false, "Error: Unhandled song in _song_signal_to_weather, song: " + song)
             return -1 # Return an error value
+
+
+# Advances to the next season if applicable
+func _advance_season() -> void:
+    if (gameTime % 10 == 0):
+        if (currentSeason == Seasons.WINTER):
+            # TODO: end the game here
+            currentSeason = Seasons.SPRING
+            return
+        currentSeason += 1
+
+# Performs actions that happen every second of the game
+func _advance_game_time() -> void:
+    gameTime += 1
+    _adjust_weatherDuration(currentWeather)
+    _advance_season()
