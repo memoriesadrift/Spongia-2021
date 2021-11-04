@@ -5,6 +5,7 @@ signal random_event(event)
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var bias: int = 0 # "Bad Luck Protection" to increase chance of generating event with time
 var accumulatedDelta: float = 0
+var isEventHappening: bool = false
 const events = ["fire", "invaders", "hail"]
 
 func _process(delta: float) -> void:
@@ -14,4 +15,5 @@ func _process(delta: float) -> void:
     var eventGenerated: int = rng.randi_range(0, 100 - bias)
     if (!eventGenerated):
         var event: String = events[rng.randi_range(0, events.size() -1)]
+        isEventHappening = true
         emit_signal("random_event", event)
