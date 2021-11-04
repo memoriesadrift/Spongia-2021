@@ -2,5 +2,5 @@
 
 [ext_resource path="res://src/entities/logical/randomEventGenerator.gd" type="Script" id=1]
 
-[node name="Node2D" type="Node2D"]
+[node name="RandomEventGenerator" type="Node2D"]
 script = ExtResource( 1 )
