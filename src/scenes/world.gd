@@ -13,6 +13,7 @@ var weatherEffectAccumulators: Dictionary = {
     Weather.SNOWY: 0,
    }
 onready var worldTimer: Timer = get_node("WorldTimer")
+onready var weatherLabel: RichTextLabel = get_node("RichTextLabel")
 
 func _ready() -> void:
     worldTimer.set_wait_time(1)
@@ -24,10 +25,26 @@ func _on_WorldTimer_timeout() -> void:
 func _on_Player_song_played(song) -> void: # song MUST be dynamically typed
     _change_Weather(_song_signal_to_weather(song))
 
+func _check_weather_effect() -> void:
+    for key in weatherEffectAccumulators:
+        if (weatherEffectAccumulators[key] > 50):
+            weatherLabel.clear()
+            weatherLabel.add_text("Extreme weather effect: ")
+            match key:
+                Weather.SUNNY:
+                    weatherLabel.add_text("drought")
+                Weather.RAINY:
+                    weatherLabel.add_text("flood")
+                Weather.WINDY:
+                    weatherLabel.add_text("hurricane")
+                Weather.SNOWY:
+                    weatherLabel.add_text("snow-in")
+            
+
 # Helper function to adjust weather durations based on current weather
 func _adjust_weatherDuration(weather: int) -> void:
     weatherEffectAccumulators[weather] += 1
-    
+
     for key in weatherEffectAccumulators:
         if(weather != key and weatherEffectAccumulators[key] > 0):
             weatherEffectAccumulators[key] -= 1
@@ -36,9 +53,9 @@ func _adjust_weatherDuration(weather: int) -> void:
 func _change_Weather(to: int) -> void:
     if (to == currentWeather or to < 0):
         return
-    
+
     var newWeather = currentWeather
-    
+ 
     match (to):
         Weather.SUNNY:
             newWeather = Weather.SUNNY
@@ -82,3 +99,4 @@ func _advance_game_time() -> void:
     gameTime += 1
     _adjust_weatherDuration(currentWeather)
     _advance_season()
+    print(weatherEffectAccumulators)
