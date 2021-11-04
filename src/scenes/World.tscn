@@ -45,6 +45,7 @@ __meta__ = {
 
 [node name="RandomEventGenerator" parent="." instance=ExtResource( 5 )]
 
+[connection signal="random_event_complete" from="." to="RandomEventGenerator" method="_on_World_random_event_complete"]
 [connection signal="song_played" from="Player" to="." method="_on_Player_song_played"]
 [connection signal="timeout" from="WorldTimer" to="." method="_on_WorldTimer_timeout"]
 [connection signal="random_event" from="RandomEventGenerator" to="." method="_on_RandomEventGenerator_random_event"]

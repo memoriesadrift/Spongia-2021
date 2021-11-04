@@ -60,6 +60,11 @@ func _process_random_event(event: String) -> void:
     match event:
         "fire":
             _process_fire_random_event()
+        # TODO: Add in a later PR
+        "hail":
+            pass
+        "invaders":
+            pass
 
 func _process_fire_random_event() -> void:
     if (currentWeather == Weather.RAINY):
