@@ -25,7 +25,7 @@ func _on_WorldTimer_timeout() -> void:
 func _on_Player_song_played(song) -> void: # song MUST be dynamically typed
     _change_Weather(_song_signal_to_weather(song))
 
-func _check_weather_effect() -> void:
+func _check_weather_too_long() -> void:
     for key in weatherEffectAccumulators:
         if (weatherEffectAccumulators[key] > 50):
             weatherLabel.clear()
