@@ -31,7 +31,7 @@ var isNotePlaying: bool = false
 onready var notePlayer: AudioStreamPlayer2D = get_node("NotePlayer")
 onready var noteTimer: Timer = get_node("NoteTimer")
 
-func _physics_process(delta: float) -> void:
+func _process(delta: float) -> void:
     var pressedKey: int = _get_played_note()
     _change_note(pressedKey)
     _change_song(pressedKey) # TODO: add song handling in the future
