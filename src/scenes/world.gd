@@ -20,8 +20,9 @@ var weatherEffectAccumulators: Dictionary = {
    }
 
 onready var worldTimer: Timer = get_node("WorldTimer")
-onready var weatherLabel: RichTextLabel = get_node("RichTextLabel")
 onready var bgmPlayer: AudioStreamPlayer = get_node("BGMPlayer")
+onready var weatherLabel: RichTextLabel = get_node("DebugExtremeWeather")
+onready var songLabel: RichTextLabel = get_node("DebugExtremeWeather")
 
 func _ready() -> void:
     worldTimer.set_wait_time(1)
@@ -51,7 +52,6 @@ func _check_weather_too_long() -> void:
                     weatherLabel.add_text("hurricane")
                 Weather.SNOWY:
                     weatherLabel.add_text("snow-in")
-
 
 func _random_event_done():
     randomEventTime = 0
@@ -133,7 +133,16 @@ func _advance_game_time() -> void:
     _adjust_weatherDuration(currentWeather)
     _advance_season()
     print(weatherEffectAccumulators)
-
+    songLabel.clear()
+    match currentWeather:
+        Weather.SUNNY:
+            songLabel.add_text("sun")
+        Weather.RAINY:
+            songLabel.add_text("rain")
+        Weather.WINDY:
+            songLabel.add_text("wind")
+        Weather.SNOWY:
+            songLabel.add_text("snow")
 
 func _on_BGMPlayer_finished() -> void:
     bgmPlayer.play()

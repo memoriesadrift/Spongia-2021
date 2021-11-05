@@ -32,7 +32,7 @@ __meta__ = {
 
 [node name="WorldTimer" type="Timer" parent="."]
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
+[node name="DebugExtremeWeather" type="RichTextLabel" parent="."]
 margin_left = 1134.19
 margin_top = 26.9181
 margin_right = 1890.19
@@ -49,6 +49,14 @@ __meta__ = {
 [node name="BGMPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
 volume_db = -25.0
+[node name="DebugSong" type="RichTextLabel" parent="."]
+margin_left = 51.0
+margin_top = 206.766
+margin_right = 683.0
+margin_bottom = 361.766
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [connection signal="random_event_complete" from="." to="RandomEventGenerator" method="_on_World_random_event_complete"]
 [connection signal="song_played" from="Player" to="." method="_on_Player_song_played"]

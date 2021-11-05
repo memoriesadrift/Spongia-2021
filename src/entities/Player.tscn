@@ -21,4 +21,7 @@ volume_db = -8.0
 
 [node name="NoteTimer" type="Timer" parent="."]
 
+[node name="SilenceTimer" type="Timer" parent="."]
+
 [connection signal="timeout" from="NoteTimer" to="." method="_on_NoteTimer_timeout"]
+[connection signal="timeout" from="SilenceTimer" to="." method="_on_SilenceTimer_timeout"]
