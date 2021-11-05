@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://assets/default_background.png" type="Texture" id=1]
 [ext_resource path="res://src/entities/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://src/scenes/world.gd" type="Script" id=3]
 [ext_resource path="res://assets/fonts/ZenAntiqueSoft-Regular.ttf" type="DynamicFontData" id=4]
 [ext_resource path="res://src/entities/logical/RandomEventGenerator.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/audio/music/mixkit-valley-sunset-127.mp3" type="AudioStream" id=6]
 
 [sub_resource type="DynamicFont" id=1]
 size = 100
@@ -45,7 +46,12 @@ __meta__ = {
 
 [node name="RandomEventGenerator" parent="." instance=ExtResource( 5 )]
 
+[node name="BGMPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = -25.0
+
 [connection signal="random_event_complete" from="." to="RandomEventGenerator" method="_on_World_random_event_complete"]
 [connection signal="song_played" from="Player" to="." method="_on_Player_song_played"]
 [connection signal="timeout" from="WorldTimer" to="." method="_on_WorldTimer_timeout"]
 [connection signal="random_event" from="RandomEventGenerator" to="." method="_on_RandomEventGenerator_random_event"]
+[connection signal="finished" from="BGMPlayer" to="." method="_on_BGMPlayer_finished"]
