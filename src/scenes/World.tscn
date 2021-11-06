@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://assets/background/seasons/spring/0_spring_bg.png" type="Texture" id=1]
 [ext_resource path="res://src/entities/Player.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://assets/background/seasons/spring/2_spring_river.png" type="Texture" id=8]
 [ext_resource path="res://assets/background/weather/sunny/sunny/0_sunny_atmosphere.png" type="Texture" id=9]
 [ext_resource path="res://src/entities/visual/Clouds.tscn" type="PackedScene" id=10]
+[ext_resource path="res://src/entities/Crops.tscn" type="PackedScene" id=11]
 
 [sub_resource type="DynamicFont" id=1]
 size = 100
@@ -74,7 +75,10 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
+[node name="Crops" parent="." instance=ExtResource( 11 )]
+
 [node name="Clouds" parent="." instance=ExtResource( 10 )]
+position = Vector2( 0, -0.00897217 )
 
 [node name="WorldTimer" type="Timer" parent="."]
 
