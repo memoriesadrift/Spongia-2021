@@ -2,6 +2,20 @@ extends Node2D
 
 signal random_event_complete()
 
+const seasonalBackgrounds: Array = [
+    preload("res://assets/background/seasons/spring/0_spring_bg.png"),
+    preload("res://assets/background/seasons/summer/0_summer_bg.png"),
+    preload("res://assets/background/seasons/autumn/0_autumn_bg.png"),
+    preload("res://assets/background/seasons/winter/0_winter_bg.png"),
+   ]
+
+const seasonalRivers: Array = [
+    preload("res://assets/background/seasons/spring/2_spring_river.png"),
+    preload("res://assets/background/seasons/summer/1_summer_river.png"),
+    preload("res://assets/background/seasons/autumn/1_autumn_river.png"),
+    preload("res://assets/background/seasons/winter/1_winter_river.png"),
+   ]
+
 enum Weather {SUNNY, RAINY, WINDY, SNOWY}
 enum Seasons {SPRING, SUMMER, AUTUMN, WINTER}
 
@@ -20,9 +34,15 @@ var weatherEffectAccumulators: Dictionary = {
    }
 
 onready var worldTimer: Timer = get_node("WorldTimer")
+
 onready var bgmPlayer: AudioStreamPlayer = get_node("BGMPlayer")
+
 onready var weatherLabel: RichTextLabel = get_node("DebugExtremeWeather")
 onready var songLabel: RichTextLabel = get_node("DebugExtremeWeather")
+
+onready var bgTexture: TextureRect = get_node("Background/BackgroundTexture")
+onready var riverTexture: TextureRect = get_node("River/RiverTexture")
+onready var frillTexture: TextureRect = get_node("Frills/FrillTexture")
 
 func _ready() -> void:
     worldTimer.set_wait_time(1)
@@ -126,6 +146,10 @@ func _advance_season() -> void:
             currentSeason = Seasons.SPRING
             return
         currentSeason += 1
+        if (currentSeason != Seasons.SPRING):
+            frillTexture.hide()
+        bgTexture.set_texture(seasonalBackgrounds[currentSeason])
+        riverTexture.set_texture(seasonalRivers[currentSeason])
 
 # Performs actions that happen every second of the game
 func _advance_game_time() -> void:
