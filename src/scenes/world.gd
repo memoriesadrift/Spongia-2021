@@ -16,6 +16,18 @@ const seasonalRivers: Array = [
     preload("res://assets/background/seasons/winter/1_winter_river.png"),
    ]
 
+# TODO: Add drought / burning ground here when incorporating repsective parts
+const sunnyAtmosphereTextures: Array = [
+    preload("res://assets/background/weather/sunny/sunny/0_sunny_atmosphere.png"),
+]
+
+const rainyAtmosphereTextures: Array = [
+    preload("res://assets/background/weather/rainy/rainy/0_rainy_01.png"),
+    preload("res://assets/background/weather/rainy/rainy/1_rainy_01.png"),
+    preload("res://assets/background/weather/rainy/rainy/2_rainy_01.png"),
+]
+var rainyAtmosphereTextureAnimationFrame: int = 0
+
 enum Weather {SUNNY, RAINY, WINDY, SNOWY}
 enum Seasons {SPRING, SUMMER, AUTUMN, WINTER}
 
@@ -34,6 +46,7 @@ var weatherEffectAccumulators: Dictionary = {
    }
 
 onready var worldTimer: Timer = get_node("WorldTimer")
+onready var animationTimer: Timer = get_node("AnimationTimer")
 
 onready var bgmPlayer: AudioStreamPlayer = get_node("BGMPlayer")
 
@@ -43,6 +56,7 @@ onready var songLabel: RichTextLabel = get_node("DebugExtremeWeather")
 onready var bgTexture: TextureRect = get_node("Background/BackgroundTexture")
 onready var riverTexture: TextureRect = get_node("River/RiverTexture")
 onready var frillTexture: TextureRect = get_node("Frills/FrillTexture")
+onready var atmosphereTexture: TextureRect = get_node("Atmosphere/AtmosphereTexture")
 
 func _ready() -> void:
     worldTimer.set_wait_time(1)
@@ -112,8 +126,12 @@ func _change_Weather(to: int) -> void:
     match (to):
         Weather.SUNNY:
             newWeather = Weather.SUNNY
+            _toggle_AnimationTimer(0, false)
+            # TODO: Add custom setter function to detect drought
+            atmosphereTexture.set_texture(sunnyAtmosphereTextures[0])
         Weather.RAINY:
             newWeather = Weather.RAINY
+            _toggle_AnimationTimer(0.1, true)
         Weather.WINDY:
             newWeather = Weather.WINDY
         Weather.SNOWY:
@@ -136,7 +154,6 @@ func _song_signal_to_weather(song: String) -> int:
         _:
             assert(false, "Error: Unhandled song in _song_signal_to_weather, song: " + song)
             return -1 # Return an error value
-
 
 # Advances to the next season if applicable
 func _advance_season() -> void:
@@ -167,6 +184,18 @@ func _advance_game_time() -> void:
             songLabel.add_text("wind")
         Weather.SNOWY:
             songLabel.add_text("snow")
+
+func _toggle_AnimationTimer(timeout: float, enabled: bool):
+    if (!animationTimer.is_stopped() or !enabled):
+        animationTimer.stop()
+        return
+    animationTimer.set_wait_time(timeout)
+    animationTimer.start()
+
+func _on_AnimationTimer_timeout() -> void:
+    if (currentWeather == Weather.RAINY):
+        rainyAtmosphereTextureAnimationFrame = rainyAtmosphereTextureAnimationFrame + 1 if rainyAtmosphereTextureAnimationFrame < rainyAtmosphereTextures.size() - 1 else 0
+        atmosphereTexture.set_texture(rainyAtmosphereTextures[rainyAtmosphereTextureAnimationFrame])
 
 func _on_BGMPlayer_finished() -> void:
     bgmPlayer.play()
