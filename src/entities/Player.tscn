@@ -17,6 +17,7 @@ shape = SubResource( 1 )
 
 [node name="NotePlayer" type="AudioStreamPlayer2D" parent="."]
 position = Vector2( 1, 0 )
+volume_db = -8.0
 
 [node name="NoteTimer" type="Timer" parent="."]
 

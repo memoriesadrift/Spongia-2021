@@ -21,10 +21,12 @@ var weatherEffectAccumulators: Dictionary = {
 
 onready var worldTimer: Timer = get_node("WorldTimer")
 onready var weatherLabel: RichTextLabel = get_node("RichTextLabel")
+onready var bgmPlayer: AudioStreamPlayer = get_node("BGMPlayer")
 
 func _ready() -> void:
     worldTimer.set_wait_time(1)
     worldTimer.start()
+    bgmPlayer.play()
 
 func _on_WorldTimer_timeout() -> void:
     _advance_game_time()
@@ -131,3 +133,7 @@ func _advance_game_time() -> void:
     _adjust_weatherDuration(currentWeather)
     _advance_season()
     print(weatherEffectAccumulators)
+
+
+func _on_BGMPlayer_finished() -> void:
+    bgmPlayer.play()
