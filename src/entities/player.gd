@@ -13,7 +13,21 @@ enum Notes {
     NONE,
     }
 
+enum Songs {
+    SUNNY,
+    WINDY,
+    RAINY,
+}
+
 var currentNote: int = -1
+var currentSong: int = 0
+
+# RegEx patterns set later, because it is not possible here
+var sunSongRegEx: RegEx = RegEx.new()
+var windSongRegEx: RegEx = RegEx.new()
+var rainSongRegEx: RegEx = RegEx.new()
+
+var noteBuffer: Array = [] 
 
 var _noteFilePathPrefix: String = "res://assets/audio/sfx/handpan/"
 
@@ -30,43 +44,81 @@ var isNotePlaying: bool = false
 
 onready var notePlayer: AudioStreamPlayer2D = get_node("NotePlayer")
 onready var noteTimer: Timer = get_node("NoteTimer")
+onready var silenceTimer: Timer = get_node("SilenceTimer")
 
 func _process(delta: float) -> void:
     var pressedKey: int = _get_played_note()
     _change_note(pressedKey)
-    _change_song(pressedKey) # TODO: add song handling in the future
     _play_note(currentNote)
+    _check_noteBuffer_length()
+    _change_song(noteBuffer)
 
 func _on_NoteTimer_timeout() -> void:
     isNotePlaying = false
     noteTimer.stop()
 
+func _on_SilenceTimer_timeout() -> void:
+    noteBuffer.push_front(currentNote)
+    silenceTimer.stop()
+
 func _play_note(note: int):
-    if (isNotePlaying or note < 0):
+    if (isNotePlaying):
         currentNote = -1
         return
+
+    # If no key is pressed, add "no note played" to noteBuffer
+    if (currentNote < 0 and !isNotePlaying):
+        if (silenceTimer.is_stopped()):
+            silenceTimer.start()
+        return
+
+    silenceTimer.stop()
     noteTimer.set_wait_time(0.7)
     noteTimer.start()
     notePlayer.stream = load(noteToSoundFilePath[note])
     notePlayer.play()
     isNotePlaying = true
+    noteBuffer.push_front(currentNote)
     currentNote = -1
 
-# TODO: In the future, refactor to be like world.gd/_change_weather and emit the local var
-func _change_song(song: int) -> void:
-    # TODO: Introduce Song enum and change here too!
-    match song:
-        Notes.A3:
-            currentNote = Notes.A3
-            emit_signal("song_played", "sunny")
-        Notes.D3:
-            currentNote = Notes.D3
-            emit_signal("song_played", "windy")
-        Notes.G3:
-            currentNote = Notes.G3
-            emit_signal("song_played", "rainy")
-        _:
-            pass
+func _change_song(notesPlayed: Array) -> void:
+    # need to set regex patterns here, because it is not possible when calling RegEx.new()
+    sunSongRegEx.compile("1100")
+    windSongRegEx.compile("1111")
+    rainSongRegEx.compile("1010")
+
+    var notesString: String = ""
+
+    # TODO: Remove this conversion if unnecessary
+    for note in notesPlayed: 
+        if (note < 0):
+            notesString += '0'
+        else:
+            notesString += '1'
+    
+    print(notesString)
+    if (notesString.length() <= 0):
+        print("exiting!")
+        return
+    
+    var isSunSong: bool = sunSongRegEx.search(notesString) != null
+    var isWindSong: bool = windSongRegEx.search(notesString) != null
+    var isRainSong: bool = rainSongRegEx.search(notesString) != null
+
+    # FIXME: Check if two can't be present at the same time
+
+    if (isSunSong):
+        currentSong = Songs.SUNNY
+        emit_signal("song_played", "sunny")
+        return
+    if (isWindSong):
+        currentSong = Songs.WINDY
+        emit_signal("song_played", "windy")
+        return
+    if (isRainSong):
+        currentSong = Songs.RAINY
+        emit_signal("song_played", "rainy")
+        return
 
 # Helper function to safely assign to currentNote
 func _change_note(to: int) -> void:
@@ -106,3 +158,7 @@ func _get_played_note() -> int:
     elif Input.get_action_strength("g3"):
         return Notes.G3
     return Notes.NONE
+
+func _check_noteBuffer_length() -> void:
+    if (noteBuffer.size() > 5):
+        noteBuffer.pop_back()
