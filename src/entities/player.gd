@@ -19,6 +19,13 @@ enum Songs {
     RAINY,
 }
 
+const idleAnimations: Array = [
+    preload("res://assets/sprites/player/character/0_weathergod_idle.png"),
+    preload("res://assets/sprites/player/character/1_weathergod_idle.png"),
+    preload("res://assets/sprites/player/character/2_weathergod_idle.png"),
+]
+var animationFrame: int = 0
+
 var currentNote: int = -1
 var currentSong: int = 0
 
@@ -45,6 +52,12 @@ var isNotePlaying: bool = false
 onready var notePlayer: AudioStreamPlayer2D = get_node("NotePlayer")
 onready var noteTimer: Timer = get_node("NoteTimer")
 onready var silenceTimer: Timer = get_node("SilenceTimer")
+onready var animationTimer: Timer = get_node("AnimationTimer")
+onready var playerSprite: Sprite = get_node("PlayerSprite")
+
+func _ready() -> void:
+    animationTimer.set_wait_time(0.6)
+    animationTimer.start()
 
 func _process(delta: float) -> void:
     var pressedKey: int = _get_played_note()
@@ -162,3 +175,9 @@ func _get_played_note() -> int:
 func _check_noteBuffer_length() -> void:
     if (noteBuffer.size() > 5):
         noteBuffer.pop_back()
+
+# func to play animation
+func _on_AnimationTimer_timeout() -> void:
+    animationFrame = animationFrame + 1 if animationFrame < 2 else 0
+    playerSprite.set_texture(idleAnimations[animationFrame])
+    pass # Replace with function body.
