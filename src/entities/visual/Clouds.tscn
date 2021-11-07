@@ -21,10 +21,10 @@ __meta__ = {
 }
 
 [node name="Cloud6" type="TextureRect" parent="CanvasLayer"]
-margin_left = 1630.59
-margin_top = 180.427
-margin_right = 1794.59
-margin_bottom = 278.427
+margin_left = 1668.73
+margin_top = 257.973
+margin_right = 1832.73
+margin_bottom = 355.973
 rect_pivot_offset = Vector2( -36.2707, 64.7026 )
 texture = ExtResource( 1 )
 expand = true

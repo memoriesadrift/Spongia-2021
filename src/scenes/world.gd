@@ -51,6 +51,10 @@ const snowyAtmosphereTextures: Array = [
     preload("res://assets/background/weather/rainy/snowy/2_snowy_01.png"),
 ]
 
+const hurricaneAtmosphereTextures: Array = [
+    preload("res://assets/background/weather/sprites/wind/0_tornado_01.png"),
+]
+
 const hailAtmosphereTextures: Array = [
     preload("res://assets/background/weather/rainy/hail/0_hail_01.png"),
     preload("res://assets/background/weather/rainy/hail/1_hail_01.png"),
@@ -265,7 +269,10 @@ func _on_AnimationTimer_timeout() -> void:
         else:
             atmosphereTexture.set_texture(rainyAtmosphereTextures[atmosphereTextureAnimationFrame])
     if (currentWeather == Weather.WINDY):
-        atmosphereTexture.set_texture(windyAtmosphereTextures[atmosphereTextureAnimationFrame])
+        if (weatherEffectAccumulators[Weather.WINDY] >= extremeWeatherThreshold):
+            atmosphereTexture.set_texture(hurricaneAtmosphereTextures[0])
+        else:
+            atmosphereTexture.set_texture(windyAtmosphereTextures[atmosphereTextureAnimationFrame])
     if (currentWeather == Weather.SNOWY):
         if (isHailing):
             atmosphereTexture.set_texture(hailAtmosphereTextures[atmosphereTextureAnimationFrame])
