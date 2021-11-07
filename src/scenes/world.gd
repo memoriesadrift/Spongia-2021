@@ -125,7 +125,8 @@ func _check_weather_too_long() -> void:
                 Weather.WINDY:
                     emit_signal("weather_event_changed", "hurricane")
                 Weather.SNOWY:
-                    emit_signal("weather_event_changed", "snow-in")
+                    riverTexture.set_texture(seasonalFloods[currentSeason])
+                    emit_signal("weather_event_changed", "flood")
 
 func _on_Crops_special_event_over() -> void:
     _random_event_done()
@@ -171,7 +172,7 @@ func _adjust_weatherDuration(weather: int) -> void:
                     groundTexture.texture = null # supposedly this is how you delete textures...
                     sunBrightness.modulate = sunBrightnessSunny
                     sunAtmosphereTexture.set_texture(sunnyAtmosphereTextures[0])
-                if (key == Weather.RAINY):
+                if (key == Weather.RAINY or key == Weather.SNOWY):
                     riverTexture.set_texture(seasonalRivers[currentSeason])
             weatherEffectAccumulators[key] -= 1
 

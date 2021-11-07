@@ -26,7 +26,6 @@ var weatherDamageAccumulators: Dictionary = {
     "sun": 0,
     "rain": 0,
     "wind": 0,
-    "snow": 0,
     "hail": 0,
     "fire": 0,
    }
@@ -110,8 +109,6 @@ func _applyWeatherEffects(weatherEvent: String) -> void:
             weatherDamageAccumulators.rain += 3
         "hurricane":
             weatherDamageAccumulators.wind += 3
-        "snow-in":
-            weatherDamageAccumulators.snow += 3
 
     match weatherEvent:
         "sunny":
@@ -121,7 +118,6 @@ func _applyWeatherEffects(weatherEvent: String) -> void:
             if (currentSpecialEvent == "hail"):
                 eventTimer -= 1
             weatherDamageAccumulators.rain -= 1
-            weatherDamageAccumulators.snow -= 1
         "rainy":
             # replace rain with hail
             if (currentSpecialEvent == "hail"):
@@ -203,8 +199,6 @@ func _safe_assign_weather_event(event: String) -> void:
         "flood":
             currentExtremeWeatherEvent = event
         "hurricane":
-            currentExtremeWeatherEvent = event
-        "snow-in":
             currentExtremeWeatherEvent = event
         "extreme_weather_over":
             currentExtremeWeatherEvent = ""
