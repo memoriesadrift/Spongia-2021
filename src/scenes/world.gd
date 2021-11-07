@@ -236,6 +236,10 @@ func _song_signal_to_weather(song: String) -> int:
 func _advance_season() -> void:
     if (gameTime % global.seasonTime == 0):
         if (currentSeason == Seasons.WINTER):
+            if (global.isEndless):
+                currentSeason = Seasons.SPRING
+                frillTexture.show()
+                return
             get_tree().change_scene("res://src/scenes/menus/EndingScreen.tscn")
             return
         currentSeason += 1
