@@ -6,5 +6,9 @@ Fonts:
 Zen Antique Soft: https://fonts.google.com/specimen/Zen+Antique+Soft
 
 Hudba:
-Handpan / Hang Drum Samples: https://www.subaqueousmusic.com/tag/free-hang-drum/
-Valley Sunset (BGM): https://desainae.com/product/valley-sunset-royalty-free-music/
+Handpan / Hang Drum Samples: 
+Zdroj: https://www.subaqueousmusic.com/tag/free-hang-drum/
+Autor: Isaac Cotec, Subaqueous
+Valley Sunset (BGM):
+Zdroj: https://desainae.com/product/valley-sunset-royalty-free-music/
+Autor: Alejandro Magaña
