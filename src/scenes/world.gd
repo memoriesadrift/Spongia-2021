@@ -1,6 +1,7 @@
 extends Node2D
 
 signal random_event_complete()
+signal weather_event_changed(weatherEvent)
 
 const seasonalBackgrounds: Array = [
     preload("res://assets/background/seasons/spring/0_spring_bg.png"),
@@ -74,39 +75,36 @@ func _on_RandomEventGenerator_random_event(event) -> void:
 
 func _check_weather_too_long() -> void:
     for key in weatherEffectAccumulators:
-        if (weatherEffectAccumulators[key] > 50):
+        if (weatherEffectAccumulators[key] > 20):
             weatherLabel.clear()
             weatherLabel.add_text("Extreme weather effect: ")
             match key:
                 Weather.SUNNY:
                     weatherLabel.add_text("drought")
+                    emit_signal("weather_event_changed", "drought")
                 Weather.RAINY:
                     weatherLabel.add_text("flood")
+                    emit_signal("weather_event_changed", "flood")
                 Weather.WINDY:
                     weatherLabel.add_text("hurricane")
+                    emit_signal("weather_event_changed", "hurricane")
                 Weather.SNOWY:
                     weatherLabel.add_text("snow-in")
+                    emit_signal("weather_event_changed", "snow-in")
+
+func _on_Crops_special_event_over() -> void:
+    _random_event_done()
 
 func _random_event_done():
-    randomEventTime = 0
-    currentRandomEvent = ""
     emit_signal("random_event_complete")
 
 func _process_random_event(event: String) -> void:
     match event:
         "fire":
-            _process_fire_random_event()
-        # TODO: Add in a later PR
+            # TODO: Trees OR Crops catch fire at random
+            emit_signal("weather_event_changed", "fire")
         "hail":
-            pass
-        "invaders":
-            pass
-
-func _process_fire_random_event() -> void:
-    if (currentWeather == Weather.RAINY):
-        randomEventTime += 1
-    if (randomEventTime > 10):
-        _random_event_done()
+            emit_signal("weather_event_changed", "hail")
 
 # Helper function to adjust weather durations based on current weather
 func _adjust_weatherDuration(weather: int) -> void:
@@ -114,6 +112,8 @@ func _adjust_weatherDuration(weather: int) -> void:
 
     for key in weatherEffectAccumulators:
         if(weather != key and weatherEffectAccumulators[key] > 0):
+            if (weatherEffectAccumulators[key] == 50):
+                emit_signal("weather_event_changed", "extreme_weather_over")
             weatherEffectAccumulators[key] -= 1
 
 # Helper function to safely assign to currentWeather
@@ -129,13 +129,17 @@ func _change_Weather(to: int) -> void:
             _toggle_AnimationTimer(0, false)
             # TODO: Add custom setter function to detect drought
             atmosphereTexture.set_texture(sunnyAtmosphereTextures[0])
+            emit_signal("weather_event_changed", "sunny")
         Weather.RAINY:
             newWeather = Weather.RAINY
             _toggle_AnimationTimer(0.1, true)
+            emit_signal("weather_event_changed", "rainy")
         Weather.WINDY:
             newWeather = Weather.WINDY
+            emit_signal("weather_event_changed", "windy")
         Weather.SNOWY:
             newWeather = Weather.SNOWY
+            emit_signal("weather_event_changed", "snowy")
         _:
             pass 
     currentWeather = newWeather

@@ -6,7 +6,7 @@ var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var bias: int = 0 # "Bad Luck Protection" to increase chance of generating event with time
 var accumulatedDelta: float = 0
 var isEventHappening: bool = false
-const events = ["fire", "invaders", "hail"]
+const events = ["fire", "hail"]
 
 func _process(delta: float) -> void:
     accumulatedDelta += delta
