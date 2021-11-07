@@ -40,7 +40,15 @@ const snowyAtmosphereTextures: Array = [
     preload("res://assets/background/weather/rainy/snowy/2_snowy_01.png"),
 ]
 
+const hailAtmosphereTextures: Array = [
+    preload("res://assets/background/weather/rainy/hail/0_hail_01.png"),
+    preload("res://assets/background/weather/rainy/hail/1_hail_01.png"),
+    preload("res://assets/background/weather/rainy/hail/2_hail_01.png"),
+]
+
 var atmosphereTextureAnimationFrame: int = 0
+
+var isHailing: bool = false
 
 const sunBrightnessSunny: Color = Color("50ffffff")
 const sunBrightnessDrought: Color = Color("a0ffffff")
@@ -109,6 +117,8 @@ func _on_Trees_special_event_over() -> void:
     _random_event_done()
 
 func _random_event_done():
+    if (isHailing):
+        isHailing = false
     emit_signal("random_event_complete")
 
 func _process_random_event(event: String) -> void:
@@ -118,6 +128,7 @@ func _process_random_event(event: String) -> void:
         "fire_crops":
             emit_signal("weather_event_changed", "fire_trees")
         "hail":
+            isHailing = true
             emit_signal("weather_event_changed", "hail")
 
 # Helper function to adjust weather durations based on current weather
@@ -207,15 +218,19 @@ func _toggle_AnimationTimer(timeout: float, enabled: bool):
     animationTimer.start()
 
 func _on_AnimationTimer_timeout() -> void:
+    atmosphereTextureAnimationFrame = atmosphereTextureAnimationFrame + 1 if atmosphereTextureAnimationFrame < 2 else 0
     if (currentWeather == Weather.RAINY):
-        atmosphereTextureAnimationFrame = atmosphereTextureAnimationFrame + 1 if atmosphereTextureAnimationFrame < rainyAtmosphereTextures.size() - 1 else 0
-        atmosphereTexture.set_texture(rainyAtmosphereTextures[atmosphereTextureAnimationFrame])
+        if (isHailing):
+            atmosphereTexture.set_texture(hailAtmosphereTextures[atmosphereTextureAnimationFrame])
+        else:
+            atmosphereTexture.set_texture(rainyAtmosphereTextures[atmosphereTextureAnimationFrame])
     if (currentWeather == Weather.WINDY):
-        atmosphereTextureAnimationFrame = atmosphereTextureAnimationFrame + 1 if atmosphereTextureAnimationFrame < windyAtmosphereTextures.size() - 1 else 0
         atmosphereTexture.set_texture(windyAtmosphereTextures[atmosphereTextureAnimationFrame])
     if (currentWeather == Weather.SNOWY):
-        atmosphereTextureAnimationFrame = atmosphereTextureAnimationFrame + 1 if atmosphereTextureAnimationFrame < snowyAtmosphereTextures.size() - 1 else 0
-        atmosphereTexture.set_texture(snowyAtmosphereTextures[atmosphereTextureAnimationFrame])
+        if (isHailing):
+            atmosphereTexture.set_texture(hailAtmosphereTextures[atmosphereTextureAnimationFrame])
+        else:
+            atmosphereTexture.set_texture(snowyAtmosphereTextures[atmosphereTextureAnimationFrame])
 
 func _on_BGMPlayer_finished() -> void:
     bgmPlayer.play()
