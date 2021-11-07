@@ -129,3 +129,4 @@ func _safe_assign_weather_event(event: String) -> void:
         "hail":
             currentSpecialEvent = event
             eventTimer = 10
+ 
