@@ -2,6 +2,12 @@ extends Node2D
 
 signal special_event_over()
 
+const damagedCropTextures: Array = [
+    preload("res://assets/sprites/crops/wheat/1_wheat_01_dead.png"),
+    preload("res://assets/sprites/crops/wheat/1_wheat_02_dead.png"),
+    preload("res://assets/sprites/crops/wheat/1_wheat_03_dead.png"),
+]
+
 const fireTextures1: Array = [
     preload("res://assets/background/weather/sprites/fire/fire_01/0_fire_01.png"),
     preload("res://assets/background/weather/sprites/fire/fire_01/1_fire_01.png"),
@@ -20,7 +26,6 @@ var weatherDamageAccumulators: Dictionary = {
     "sun": 0,
     "rain": 0,
     "wind": 0,
-    "snow": 0,
     "hail": 0,
     "fire": 0,
    }
@@ -43,11 +48,43 @@ onready var fire22: TextureRect = get_node("FireLayer/2Fire2")
 
 var fires: Array = []
 
+# no better way?
+onready var crop1: TextureRect = get_node("CropLayer/0Wheat")
+onready var crop2: TextureRect = get_node("CropLayer/0Wheat2")
+onready var crop3: TextureRect = get_node("CropLayer/0Wheat3")
+onready var crop4: TextureRect = get_node("CropLayer/0Wheat4")
+
+onready var crop5: TextureRect = get_node("CropLayer/1Wheat")
+onready var crop6: TextureRect = get_node("CropLayer/1Wheat2")
+onready var crop7: TextureRect = get_node("CropLayer/1Wheat3")
+onready var crop8: TextureRect = get_node("CropLayer/1Wheat4")
+onready var crop9: TextureRect = get_node("CropLayer/1Wheat5")
+
+onready var crop10: TextureRect = get_node("CropLayer/2Wheat")
+onready var crop11: TextureRect = get_node("CropLayer/2Wheat2")
+onready var crop12: TextureRect = get_node("CropLayer/2Wheat3")
+
+var crops: Array = []
+
 func _ready() -> void:
     fires.append(fire11)
     fires.append(fire12)
     fires.append(fire21)
     fires.append(fire22)
+
+    crops.append(crop1)
+    crops.append(crop2)
+    crops.append(crop3)
+    crops.append(crop4)
+    crops.append(crop5)
+    crops.append(crop6)
+    crops.append(crop7)
+    crops.append(crop8)
+    crops.append(crop9)
+    crops.append(crop10)
+    crops.append(crop11)
+    crops.append(crop12)
+    
     damageTimer.start()
 
 func _on_DamageTimer_timeout() -> void:
@@ -72,8 +109,6 @@ func _applyWeatherEffects(weatherEvent: String) -> void:
             weatherDamageAccumulators.rain += 3
         "hurricane":
             weatherDamageAccumulators.wind += 3
-        "snow-in":
-            weatherDamageAccumulators.snow += 3
 
     match weatherEvent:
         "sunny":
@@ -83,14 +118,13 @@ func _applyWeatherEffects(weatherEvent: String) -> void:
             if (currentSpecialEvent == "hail"):
                 eventTimer -= 1
             weatherDamageAccumulators.rain -= 1
-            weatherDamageAccumulators.snow -= 1
         "rainy":
             # replace rain with hail
             if (currentSpecialEvent == "hail"):
                 weatherDamageAccumulators.hail += 1
             else:
                 weatherDamageAccumulators.sun -= 1
-                weatherDamageAccumulators.fire -= 4
+                weatherDamageAccumulators.fire -= 5
         "windy":
             if (weatherDamageAccumulators.fire > 1 and currentSpecialEvent == "fire_crops"):
                 weatherDamageAccumulators.fire += 2
@@ -118,16 +152,30 @@ func _applyWeatherEffects(weatherEvent: String) -> void:
         eventTimer = 0
         emit_signal("special_event_over")
 
-# TODO: Tinker with numbers
 func _incur_damage() -> void:
     for key in weatherDamageAccumulators:
         if (weatherDamageAccumulators[key] > 10):
             weatherDamageAccumulators[key] -= 10
             damageLevel += 1
+            global.score -= 1
+            _apply_damage_effects()
 
-# TODO: Apply damage graphically
 func _apply_damage_effects():
-    pass
+    var cropToDamage: int = damageLevel -1
+    if (global.isEndurance):
+        global.plantsDestroyed += 1
+    if (cropToDamage > crops.size() - 1):
+        return
+    
+    if (cropToDamage < 4):
+        crops[cropToDamage].set_texture(damagedCropTextures[0])
+        return
+    if (cropToDamage > 3 and cropToDamage < 9):
+        crops[cropToDamage].set_texture(damagedCropTextures[1])
+        return
+    if (cropToDamage > 8):
+        crops[cropToDamage].set_texture(damagedCropTextures[2])
+        return
 
 func start_fire() -> void:
     animationTimer.set_wait_time(0.2)
@@ -154,8 +202,6 @@ func _safe_assign_weather_event(event: String) -> void:
         "flood":
             currentExtremeWeatherEvent = event
         "hurricane":
-            currentExtremeWeatherEvent = event
-        "snow-in":
             currentExtremeWeatherEvent = event
         "extreme_weather_over":
             currentExtremeWeatherEvent = ""

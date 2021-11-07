@@ -17,6 +17,7 @@ func _process(delta: float) -> void:
     var eventGenerated: int = rng.randi_range(0, max(0, 100 - bias))
     if (eventGenerated == 0):
         bias = 0
+        rng.randomize()
         var event: String = events[rng.randi_range(0, events.size() -1)]
         if (event == "fire"):
             var whereFire = rng.randi_range(0, 1)

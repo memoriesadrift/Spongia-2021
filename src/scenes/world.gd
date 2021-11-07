@@ -51,6 +51,10 @@ const snowyAtmosphereTextures: Array = [
     preload("res://assets/background/weather/rainy/snowy/2_snowy_01.png"),
 ]
 
+const hurricaneAtmosphereTextures: Array = [
+    preload("res://assets/background/weather/sprites/wind/0_tornado_01.png"),
+]
+
 const hailAtmosphereTextures: Array = [
     preload("res://assets/background/weather/rainy/hail/0_hail_01.png"),
     preload("res://assets/background/weather/rainy/hail/1_hail_01.png"),
@@ -70,7 +74,7 @@ enum Seasons {SPRING, SUMMER, AUTUMN, WINTER}
 
 var gameTime: int = 0
 
-var extremeWeatherThreshold: int = 10
+const extremeWeatherThreshold: int = 10
 
 var currentSeason: int = Seasons.SPRING
 var currentWeather: int = Weather.SUNNY
@@ -125,7 +129,8 @@ func _check_weather_too_long() -> void:
                 Weather.WINDY:
                     emit_signal("weather_event_changed", "hurricane")
                 Weather.SNOWY:
-                    emit_signal("weather_event_changed", "snow-in")
+                    riverTexture.set_texture(seasonalFloods[currentSeason])
+                    emit_signal("weather_event_changed", "flood")
 
 func _on_Crops_special_event_over() -> void:
     _random_event_done()
@@ -171,7 +176,7 @@ func _adjust_weatherDuration(weather: int) -> void:
                     groundTexture.texture = null # supposedly this is how you delete textures...
                     sunBrightness.modulate = sunBrightnessSunny
                     sunAtmosphereTexture.set_texture(sunnyAtmosphereTextures[0])
-                if (key == Weather.RAINY):
+                if (key == Weather.RAINY or key == Weather.SNOWY):
                     riverTexture.set_texture(seasonalRivers[currentSeason])
             weatherEffectAccumulators[key] -= 1
 
@@ -229,10 +234,13 @@ func _song_signal_to_weather(song: String) -> int:
 
 # Advances to the next season if applicable
 func _advance_season() -> void:
-    if (gameTime % 20 == 0):
+    if (gameTime % global.seasonTime == 0):
         if (currentSeason == Seasons.WINTER):
-            # TODO: end the game here
-            currentSeason = Seasons.SPRING
+            if (global.isEndless or global.isEndurance):
+                currentSeason = Seasons.SPRING
+                frillTexture.show()
+                return
+            get_tree().change_scene("res://src/scenes/menus/EndingScreen.tscn")
             return
         currentSeason += 1
         if (currentSeason != Seasons.SPRING):
@@ -249,6 +257,10 @@ func _advance_game_time() -> void:
     _adjust_weatherDuration(currentWeather)
     _check_weather_too_long()
     _advance_season()
+    if (global.isEndurance):
+        global.timeSurvived += 1
+        if (global.plantsDestroyed >= global.totalPlants):
+            get_tree().change_scene("res://src/scenes/menus/EnduranceEndingScreen.tscn")
 
 func _toggle_AnimationTimer(timeout: float, enabled: bool):
     if (!enabled):
@@ -265,7 +277,10 @@ func _on_AnimationTimer_timeout() -> void:
         else:
             atmosphereTexture.set_texture(rainyAtmosphereTextures[atmosphereTextureAnimationFrame])
     if (currentWeather == Weather.WINDY):
-        atmosphereTexture.set_texture(windyAtmosphereTextures[atmosphereTextureAnimationFrame])
+        if (weatherEffectAccumulators[Weather.WINDY] >= extremeWeatherThreshold):
+            atmosphereTexture.set_texture(hurricaneAtmosphereTextures[0])
+        else:
+            atmosphereTexture.set_texture(windyAtmosphereTextures[atmosphereTextureAnimationFrame])
     if (currentWeather == Weather.SNOWY):
         if (isHailing):
             atmosphereTexture.set_texture(hailAtmosphereTextures[atmosphereTextureAnimationFrame])
