@@ -42,6 +42,10 @@ const snowyAtmosphereTextures: Array = [
 
 var atmosphereTextureAnimationFrame: int = 0
 
+const sunBrightnessSunny: Color = Color("50ffffff")
+const sunBrightnessDrought: Color = Color("a0ffffff")
+const sunBrightnessOff: Color = Color("00ffffff")
+
 enum Weather {SUNNY, RAINY, WINDY, SNOWY}
 enum Seasons {SPRING, SUMMER, AUTUMN, WINTER}
 
@@ -68,6 +72,7 @@ onready var bgTexture: TextureRect = get_node("Background/BackgroundTexture")
 onready var riverTexture: TextureRect = get_node("River/RiverTexture")
 onready var frillTexture: TextureRect = get_node("Frills/FrillTexture")
 onready var atmosphereTexture: TextureRect = get_node("Atmosphere/AtmosphereTexture")
+onready var sunBrightness: = get_node("Sun/SunBrightness")
 
 func _ready() -> void:
     worldTimer.set_wait_time(1)
@@ -88,6 +93,7 @@ func _check_weather_too_long() -> void:
         if (weatherEffectAccumulators[key] > 20):
             match key:
                 Weather.SUNNY:
+                    sunBrightness.modulate = sunBrightnessDrought
                     emit_signal("weather_event_changed", "drought")
                 Weather.RAINY:
                     emit_signal("weather_event_changed", "flood")
@@ -133,18 +139,22 @@ func _change_Weather(to: int) -> void:
             _toggle_AnimationTimer(0, false)
             # TODO: Add custom setter function to detect drought
             atmosphereTexture.set_texture(sunnyAtmosphereTextures[0])
+            sunBrightness.modulate = sunBrightnessSunny
             emit_signal("weather_event_changed", "sunny")
         Weather.RAINY:
             newWeather = Weather.RAINY
             _toggle_AnimationTimer(0.1, true)
+            sunBrightness.modulate = sunBrightnessOff
             emit_signal("weather_event_changed", "rainy")
         Weather.WINDY:
             newWeather = Weather.WINDY
             _toggle_AnimationTimer(0.3, true)
+            sunBrightness.modulate = sunBrightnessOff
             emit_signal("weather_event_changed", "windy")
         Weather.SNOWY:
             newWeather = Weather.SNOWY
             _toggle_AnimationTimer(0.1, true)
+            sunBrightness.modulate = sunBrightnessOff
             emit_signal("weather_event_changed", "snowy")
         _:
             pass 
