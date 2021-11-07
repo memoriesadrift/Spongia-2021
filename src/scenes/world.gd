@@ -27,9 +27,11 @@ const seasonalFloods: Array = [
 const sunnyAtmosphereTextures: Array = [
     preload("res://assets/background/weather/sunny/sunny/0_sunny_atmosphere.png"),
     preload("res://assets/background/weather/sunny/drought/1_drought_atmosphere.png"),
+    preload("res://assets/background/weather/sunny/burning/1_burning_atmosphere.png"),
 ]
 
 const droughtGroundTexture: = preload("res://assets/background/weather/sunny/drought/0_drought_ground.png")
+const burningGroundTexture: = preload("res://assets/background/weather/sunny/burning/0_burning_ground.png")
 
 const rainyAtmosphereTextures: Array = [
     preload("res://assets/background/weather/rainy/rainy/0_rainy_01.png"),
@@ -134,13 +136,24 @@ func _on_Trees_special_event_over() -> void:
 func _random_event_done():
     if (isHailing):
         isHailing = false
+    if (weatherEffectAccumulators[Weather.SUNNY] >= extremeWeatherThreshold):
+        sunAtmosphereTexture.set_texture(sunnyAtmosphereTextures[1])
+        sunBrightness.modulate = sunBrightnessDrought
+    else:
+        sunAtmosphereTexture.set_texture(sunnyAtmosphereTextures[0])
+        sunBrightness.modulate = sunBrightnessSunny
+    
     emit_signal("random_event_complete")
 
 func _process_random_event(event: String) -> void:
     match event:
         "fire_trees":
+            groundTexture.set_texture(burningGroundTexture)
+            sunAtmosphereTexture.set_texture(sunnyAtmosphereTextures[2])
             emit_signal("weather_event_changed", "fire_trees")
         "fire_crops":
+            groundTexture.set_texture(burningGroundTexture)
+            sunAtmosphereTexture.set_texture(sunnyAtmosphereTextures[2])
             emit_signal("weather_event_changed", "fire_crops")
         "hail":
             isHailing = true
