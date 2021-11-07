@@ -236,7 +236,7 @@ func _song_signal_to_weather(song: String) -> int:
 func _advance_season() -> void:
     if (gameTime % global.seasonTime == 0):
         if (currentSeason == Seasons.WINTER):
-            if (global.isEndless):
+            if (global.isEndless or global.isEndurance):
                 currentSeason = Seasons.SPRING
                 frillTexture.show()
                 return
@@ -257,6 +257,10 @@ func _advance_game_time() -> void:
     _adjust_weatherDuration(currentWeather)
     _check_weather_too_long()
     _advance_season()
+    if (global.isEndurance):
+        global.timeSurvived += 1
+        if (global.plantsDestroyed >= global.totalPlants):
+            get_tree().change_scene("res://src/scenes/menus/EnduranceEndingScreen.tscn")
 
 func _toggle_AnimationTimer(timeout: float, enabled: bool):
     if (!enabled):

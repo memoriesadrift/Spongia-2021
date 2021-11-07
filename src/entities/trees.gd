@@ -171,6 +171,8 @@ func _incur_damage() -> void:
 
 func _apply_damage_effects():
     var treeToDamage: int = damageLevel -1
+    if (global.isEndurance):
+        global.plantsDestroyed += 1
     if (treeToDamage > trees.size() - 1):
         return
     

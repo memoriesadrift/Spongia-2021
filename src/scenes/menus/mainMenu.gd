@@ -5,6 +5,8 @@ func _ready() -> void:
 
 func _on_StartButton_pressed() -> void:
     global.isEndless = false
+    global.isEndurance = false
+    global.score = 400
     get_tree().change_scene("res://src/scenes/World.tscn")
 
 func _on_QuitButton_pressed() -> void:
@@ -13,8 +15,15 @@ func _on_QuitButton_pressed() -> void:
 func _on_HelpButton_pressed() -> void:
     get_tree().change_scene("res://src/scenes/menus/HelpMenu.tscn")
 
-
 func _on_EndlessButton_pressed() -> void:
-    get_tree().change_scene("res://src/scenes/World.tscn")
     global.isEndless = true
-    pass # Replace with function body.
+    global.isEndurance = false
+    get_tree().change_scene("res://src/scenes/World.tscn")
+
+func _on_EnduranceButton_pressed() -> void:
+    global.isEndless = false
+    global.isEndurance = true
+    global.plantsDestroyed = 0
+    global.timeSurvived = 0
+    get_tree().change_scene("res://src/scenes/World.tscn")
+    

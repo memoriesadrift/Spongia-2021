@@ -162,6 +162,8 @@ func _incur_damage() -> void:
 
 func _apply_damage_effects():
     var cropToDamage: int = damageLevel -1
+    if (global.isEndurance):
+        global.plantsDestroyed += 1
     if (cropToDamage > crops.size() - 1):
         return
     
