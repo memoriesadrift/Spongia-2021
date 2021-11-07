@@ -17,10 +17,21 @@ const seasonalRivers: Array = [
     preload("res://assets/background/seasons/winter/1_winter_river.png"),
    ]
 
-# TODO: Add drought / burning ground here when incorporating repsective parts
+const seasonalFloods: Array = [
+    preload("res://assets/background/weather/rainy/flood/0_flood_spring.png"),
+    preload("res://assets/background/weather/rainy/flood/1_flood_summer.png"),
+    preload("res://assets/background/weather/rainy/flood/2_flood_fall.png"),
+    preload("res://assets/background/weather/rainy/flood/3_flood_winter.png"),
+   ]
+
 const sunnyAtmosphereTextures: Array = [
     preload("res://assets/background/weather/sunny/sunny/0_sunny_atmosphere.png"),
+    preload("res://assets/background/weather/sunny/drought/1_drought_atmosphere.png"),
+    preload("res://assets/background/weather/sunny/burning/1_burning_atmosphere.png"),
 ]
+
+const droughtGroundTexture: = preload("res://assets/background/weather/sunny/drought/0_drought_ground.png")
+const burningGroundTexture: = preload("res://assets/background/weather/sunny/burning/0_burning_ground.png")
 
 const rainyAtmosphereTextures: Array = [
     preload("res://assets/background/weather/rainy/rainy/0_rainy_01.png"),
@@ -59,9 +70,10 @@ enum Seasons {SPRING, SUMMER, AUTUMN, WINTER}
 
 var gameTime: int = 0
 
+var extremeWeatherThreshold: int = 10
+
 var currentSeason: int = Seasons.SPRING
 var currentWeather: int = Weather.SUNNY
-var currentRandomEvent: String = ""
 var randomEventTime: int = 0
 
 var weatherEffectAccumulators: Dictionary = {
@@ -79,7 +91,9 @@ onready var bgmPlayer: AudioStreamPlayer = get_node("BGMPlayer")
 onready var bgTexture: TextureRect = get_node("Background/BackgroundTexture")
 onready var riverTexture: TextureRect = get_node("River/RiverTexture")
 onready var frillTexture: TextureRect = get_node("Frills/FrillTexture")
+onready var groundTexture: TextureRect = get_node("Ground/GroundTexture")
 onready var atmosphereTexture: TextureRect = get_node("Atmosphere/AtmosphereTexture")
+onready var sunAtmosphereTexture: TextureRect = get_node("SunAtmosphere/SunAtmosphereTexture")
 onready var sunBrightness: = get_node("Sun/SunBrightness")
 
 func _ready() -> void:
@@ -94,16 +108,19 @@ func _on_Player_song_played(song) -> void: # song MUST be dynamically typed
     _change_Weather(_song_signal_to_weather(song))
 
 func _on_RandomEventGenerator_random_event(event) -> void:
-    currentRandomEvent = event
+    _process_random_event(event)
 
 func _check_weather_too_long() -> void:
     for key in weatherEffectAccumulators:
-        if (weatherEffectAccumulators[key] > 20):
+        if (weatherEffectAccumulators[key] >= extremeWeatherThreshold):
             match key:
                 Weather.SUNNY:
                     sunBrightness.modulate = sunBrightnessDrought
+                    sunAtmosphereTexture.set_texture(sunnyAtmosphereTextures[1])
+                    groundTexture.set_texture(droughtGroundTexture)
                     emit_signal("weather_event_changed", "drought")
                 Weather.RAINY:
+                    riverTexture.set_texture(seasonalFloods[currentSeason])
                     emit_signal("weather_event_changed", "flood")
                 Weather.WINDY:
                     emit_signal("weather_event_changed", "hurricane")
@@ -119,14 +136,25 @@ func _on_Trees_special_event_over() -> void:
 func _random_event_done():
     if (isHailing):
         isHailing = false
+    if (weatherEffectAccumulators[Weather.SUNNY] >= extremeWeatherThreshold):
+        sunAtmosphereTexture.set_texture(sunnyAtmosphereTextures[1])
+        sunBrightness.modulate = sunBrightnessDrought
+    else:
+        sunAtmosphereTexture.set_texture(sunnyAtmosphereTextures[0])
+        sunBrightness.modulate = sunBrightnessSunny
+    
     emit_signal("random_event_complete")
 
 func _process_random_event(event: String) -> void:
     match event:
         "fire_trees":
-            emit_signal("weather_event_changed", "fire_crops")
-        "fire_crops":
+            groundTexture.set_texture(burningGroundTexture)
+            sunAtmosphereTexture.set_texture(sunnyAtmosphereTextures[2])
             emit_signal("weather_event_changed", "fire_trees")
+        "fire_crops":
+            groundTexture.set_texture(burningGroundTexture)
+            sunAtmosphereTexture.set_texture(sunnyAtmosphereTextures[2])
+            emit_signal("weather_event_changed", "fire_crops")
         "hail":
             isHailing = true
             emit_signal("weather_event_changed", "hail")
@@ -137,8 +165,14 @@ func _adjust_weatherDuration(weather: int) -> void:
 
     for key in weatherEffectAccumulators:
         if(weather != key and weatherEffectAccumulators[key] > 0):
-            if (weatherEffectAccumulators[key] == 50):
+            if (weatherEffectAccumulators[key] == extremeWeatherThreshold):
                 emit_signal("weather_event_changed", "extreme_weather_over")
+                if (key == Weather.SUNNY):
+                    groundTexture.texture = null # supposedly this is how you delete textures...
+                    sunBrightness.modulate = sunBrightnessSunny
+                    sunAtmosphereTexture.set_texture(sunnyAtmosphereTextures[0])
+                if (key == Weather.RAINY):
+                    riverTexture.set_texture(seasonalRivers[currentSeason])
             weatherEffectAccumulators[key] -= 1
 
 # Helper function to safely assign to currentWeather
@@ -152,24 +186,27 @@ func _change_Weather(to: int) -> void:
         Weather.SUNNY:
             newWeather = Weather.SUNNY
             _toggle_AnimationTimer(0, false)
-            # TODO: Add custom setter function to detect drought
-            atmosphereTexture.set_texture(sunnyAtmosphereTextures[0])
+            atmosphereTexture.texture = null # remove texture
+            sunAtmosphereTexture.set_texture(sunnyAtmosphereTextures[0])
             sunBrightness.modulate = sunBrightnessSunny
             emit_signal("weather_event_changed", "sunny")
         Weather.RAINY:
             newWeather = Weather.RAINY
             _toggle_AnimationTimer(0.1, true)
-            sunBrightness.modulate = sunBrightnessOff
+            if (weatherEffectAccumulators[Weather.SUNNY] < extremeWeatherThreshold):
+                sunBrightness.modulate = sunBrightnessOff
             emit_signal("weather_event_changed", "rainy")
         Weather.WINDY:
             newWeather = Weather.WINDY
             _toggle_AnimationTimer(0.3, true)
-            sunBrightness.modulate = sunBrightnessOff
+            if (weatherEffectAccumulators[Weather.SUNNY] < extremeWeatherThreshold):
+                sunBrightness.modulate = sunBrightnessOff
             emit_signal("weather_event_changed", "windy")
         Weather.SNOWY:
             newWeather = Weather.SNOWY
             _toggle_AnimationTimer(0.1, true)
-            sunBrightness.modulate = sunBrightnessOff
+            if (weatherEffectAccumulators[Weather.SUNNY] < extremeWeatherThreshold):
+                sunBrightness.modulate = sunBrightnessOff
             emit_signal("weather_event_changed", "snowy")
         _:
             pass 
@@ -192,7 +229,7 @@ func _song_signal_to_weather(song: String) -> int:
 
 # Advances to the next season if applicable
 func _advance_season() -> void:
-    if (gameTime % 10 == 0):
+    if (gameTime % 20 == 0):
         if (currentSeason == Seasons.WINTER):
             # TODO: end the game here
             currentSeason = Seasons.SPRING
@@ -201,17 +238,20 @@ func _advance_season() -> void:
         if (currentSeason != Seasons.SPRING):
             frillTexture.hide()
         bgTexture.set_texture(seasonalBackgrounds[currentSeason])
-        riverTexture.set_texture(seasonalRivers[currentSeason])
+        if (weatherEffectAccumulators[Weather.RAINY] >= extremeWeatherThreshold):
+            riverTexture.set_texture(seasonalFloods[currentSeason])
+        else:
+            riverTexture.set_texture(seasonalRivers[currentSeason])
 
 # Performs actions that happen every second of the game
 func _advance_game_time() -> void:
     gameTime += 1
     _adjust_weatherDuration(currentWeather)
+    _check_weather_too_long()
     _advance_season()
-    print(weatherEffectAccumulators)
 
 func _toggle_AnimationTimer(timeout: float, enabled: bool):
-    if (!animationTimer.is_stopped() or !enabled):
+    if (!enabled):
         animationTimer.stop()
         return
     animationTimer.set_wait_time(timeout)

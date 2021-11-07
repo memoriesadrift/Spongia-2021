@@ -11,9 +11,9 @@
 [node name="Trees" type="Node2D"]
 script = ExtResource( 1 )
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="TreeLayer" type="CanvasLayer" parent="."]
 
-[node name="3Evergreen" type="TextureRect" parent="CanvasLayer"]
+[node name="3Evergreen" type="TextureRect" parent="TreeLayer"]
 margin_left = 616.854
 margin_top = 672.964
 margin_right = 762.854
@@ -24,7 +24,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="1Evergreen" type="TextureRect" parent="CanvasLayer"]
+[node name="1Evergreen" type="TextureRect" parent="TreeLayer"]
 margin_left = 324.707
 margin_top = 588.52
 margin_right = 486.707
@@ -35,7 +35,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="1Evergreen2" type="TextureRect" parent="CanvasLayer"]
+[node name="1Evergreen2" type="TextureRect" parent="TreeLayer"]
 margin_left = 684.0
 margin_top = 724.0
 margin_right = 849.0
@@ -46,7 +46,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="1Evergreen3" type="TextureRect" parent="CanvasLayer"]
+[node name="1Evergreen3" type="TextureRect" parent="TreeLayer"]
 margin_left = 1002.92
 margin_top = 785.634
 margin_right = 1226.92
@@ -57,7 +57,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="1Evergreen4" type="TextureRect" parent="CanvasLayer"]
+[node name="1Evergreen4" type="TextureRect" parent="TreeLayer"]
 margin_left = 1345.95
 margin_top = 867.665
 margin_right = 1560.95
@@ -68,7 +68,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="2Evergreen" type="TextureRect" parent="CanvasLayer"]
+[node name="2Evergreen" type="TextureRect" parent="TreeLayer"]
 margin_left = 505.627
 margin_top = 635.929
 margin_right = 629.627
@@ -79,7 +79,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="2Evergreen3" type="TextureRect" parent="CanvasLayer"]
+[node name="2Evergreen3" type="TextureRect" parent="TreeLayer"]
 margin_left = 1230.88
 margin_top = 737.005
 margin_right = 1441.88
@@ -90,7 +90,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="2Evergreen2" type="TextureRect" parent="CanvasLayer"]
+[node name="2Evergreen2" type="TextureRect" parent="TreeLayer"]
 margin_left = 450.113
 margin_top = 562.272
 margin_right = 547.113
@@ -101,7 +101,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="3Evergreen2" type="TextureRect" parent="CanvasLayer"]
+[node name="3Evergreen2" type="TextureRect" parent="TreeLayer"]
 margin_left = 1130.59
 margin_top = 863.172
 margin_right = 1311.59
@@ -112,7 +112,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="3Leafygreen" type="TextureRect" parent="CanvasLayer"]
+[node name="3Leafygreen" type="TextureRect" parent="TreeLayer"]
 margin_left = 1704.59
 margin_top = 504.673
 margin_right = 1856.59
@@ -123,7 +123,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="1Leafygreen" type="TextureRect" parent="CanvasLayer"]
+[node name="1Leafygreen" type="TextureRect" parent="TreeLayer"]
 margin_left = 1813.26
 margin_top = 638.57
 margin_right = 1850.26
@@ -134,7 +134,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="1Leafygreen2" type="TextureRect" parent="CanvasLayer"]
+[node name="1Leafygreen2" type="TextureRect" parent="TreeLayer"]
 margin_left = 1872.65
 margin_top = 572.251
 margin_right = 1919.65
@@ -146,7 +146,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="3Leafygreen2" type="TextureRect" parent="CanvasLayer"]
+[node name="3Leafygreen2" type="TextureRect" parent="TreeLayer"]
 margin_left = 1670.65
 margin_top = 637.998
 margin_right = 1831.65
@@ -157,7 +157,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="1Leafygreen3" type="TextureRect" parent="CanvasLayer"]
+[node name="1Leafygreen3" type="TextureRect" parent="TreeLayer"]
 margin_left = 1596.27
 margin_top = 811.676
 margin_right = 1713.27
@@ -168,7 +168,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="2Leafygreen" type="TextureRect" parent="CanvasLayer"]
+[node name="2Leafygreen" type="TextureRect" parent="TreeLayer"]
 margin_left = 1708.0
 margin_top = 780.0
 margin_right = 1817.0
@@ -180,3 +180,37 @@ __meta__ = {
 }
 
 [node name="DamageTimer" type="Timer" parent="."]
+
+[node name="FireLayer" type="CanvasLayer" parent="."]
+
+[node name="1Fire1" type="TextureRect" parent="FireLayer"]
+margin_left = 1258.0
+margin_top = 74.0
+margin_right = 3178.0
+margin_bottom = 1154.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="2Fire1" type="TextureRect" parent="FireLayer"]
+margin_left = 514.0
+margin_top = -152.0
+margin_right = 2434.0
+margin_bottom = 928.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Fire2" type="TextureRect" parent="FireLayer"]
+margin_left = 1446.0
+margin_top = -160.0
+margin_right = 3366.0
+margin_bottom = 920.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="DamageTimer" to="." method="_on_DamageTimer_timeout"]
+[connection signal="timeout" from="AnimationTimer" to="." method="_on_AnimationTimer_timeout"]

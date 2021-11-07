@@ -124,10 +124,8 @@ func _change_song(notesPlayed: Array) -> void:
             notesString += '0'
         else:
             notesString += '1'
-    
-    print(notesString)
+
     if (notesString.length() <= 0):
-        print("exiting!")
         return
     
     var isSunSong: bool = sunSongRegEx.search(notesString) != null
