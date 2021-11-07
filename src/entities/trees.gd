@@ -113,11 +113,11 @@ func _applyWeatherEffects(weatherEvent: String) -> void:
 
     match currentExtremeWeatherEvent:
         "drought":
-            weatherDamageAccumulators.sun += 3
+            weatherDamageAccumulators.sun += 2
         "flood":
-            weatherDamageAccumulators.rain += 3
+            weatherDamageAccumulators.rain += 2
         "hurricane":
-            weatherDamageAccumulators.wind += 3
+            weatherDamageAccumulators.wind += 2
 
     match weatherEvent:
         "sunny":
