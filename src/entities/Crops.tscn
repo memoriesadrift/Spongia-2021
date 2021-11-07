@@ -8,9 +8,9 @@
 [node name="Crops" type="Node2D"]
 script = ExtResource( 4 )
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CropLayer" type="CanvasLayer" parent="."]
 
-[node name="0Wheat" type="TextureRect" parent="CanvasLayer"]
+[node name="0Wheat" type="TextureRect" parent="CropLayer"]
 margin_left = 181.398
 margin_top = 876.811
 margin_right = 267.398
@@ -21,7 +21,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="0Wheat4" type="TextureRect" parent="CanvasLayer"]
+[node name="0Wheat4" type="TextureRect" parent="CropLayer"]
 margin_left = 78.4756
 margin_top = 812.398
 margin_right = 120.476
@@ -32,7 +32,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="0Wheat2" type="TextureRect" parent="CanvasLayer"]
+[node name="0Wheat2" type="TextureRect" parent="CropLayer"]
 margin_left = 649.713
 margin_top = 870.461
 margin_right = 718.713
@@ -43,7 +43,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="0Wheat3" type="TextureRect" parent="CanvasLayer"]
+[node name="0Wheat3" type="TextureRect" parent="CropLayer"]
 margin_left = 889.161
 margin_top = 857.986
 margin_right = 933.161
@@ -54,7 +54,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="1Wheat" type="TextureRect" parent="CanvasLayer"]
+[node name="1Wheat" type="TextureRect" parent="CropLayer"]
 margin_left = 440.839
 margin_top = 876.441
 margin_right = 503.839
@@ -65,7 +65,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="1Wheat4" type="TextureRect" parent="CanvasLayer"]
+[node name="1Wheat4" type="TextureRect" parent="CropLayer"]
 margin_left = 726.825
 margin_top = 892.762
 margin_right = 819.825
@@ -76,7 +76,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="1Wheat2" type="TextureRect" parent="CanvasLayer"]
+[node name="1Wheat2" type="TextureRect" parent="CropLayer"]
 margin_left = 251.939
 margin_top = 801.833
 margin_right = 314.939
@@ -87,7 +87,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="1Wheat3" type="TextureRect" parent="CanvasLayer"]
+[node name="1Wheat3" type="TextureRect" parent="CropLayer"]
 margin_left = 125.0
 margin_top = 791.0
 margin_right = 193.0
@@ -98,7 +98,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="1Wheat5" type="TextureRect" parent="CanvasLayer"]
+[node name="1Wheat5" type="TextureRect" parent="CropLayer"]
 margin_left = 233.063
 margin_top = 743.937
 margin_right = 263.063
@@ -109,7 +109,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="2Wheat" type="TextureRect" parent="CanvasLayer"]
+[node name="2Wheat" type="TextureRect" parent="CropLayer"]
 margin_left = 504.038
 margin_top = 862.995
 margin_right = 623.038
@@ -121,7 +121,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="2Wheat2" type="TextureRect" parent="CanvasLayer"]
+[node name="2Wheat2" type="TextureRect" parent="CropLayer"]
 margin_left = 311.0
 margin_top = 867.0
 margin_right = 398.0
@@ -133,7 +133,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="2Wheat3" type="TextureRect" parent="CanvasLayer"]
+[node name="2Wheat3" type="TextureRect" parent="CropLayer"]
 margin_left = 54.4614
 margin_top = 867.937
 margin_right = 121.461
