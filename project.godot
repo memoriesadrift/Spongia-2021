@@ -10,7 +10,8 @@ config_version=4
 
 [application]
 
-config/name="Spongia 2021"
+config/name="Nature's Crescendo"
+run/main_scene="res://src/scenes/menus/MainMenu.tscn"
 boot_splash/fullsize=false
 boot_splash/use_filter=false
 config/icon="res://icon.png"

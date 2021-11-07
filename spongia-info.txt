@@ -1,9 +1,10 @@
 Názov tímu: CS Hustle
-Názov hry: ---
-Vývojové prostredie a prostriedky: Godot, GDScript
+Názov hry: Nature's Crescendo
+Vývojové prostredie a prostriedky: Godot, GDScript, Krita
 
 Fonts:
 Zen Antique Soft: https://fonts.google.com/specimen/Zen+Antique+Soft
 
 Hudba:
 Handpan / Hang Drum Samples: https://www.subaqueousmusic.com/tag/free-hang-drum/
+Valley Sunset (BGM): https://desainae.com/product/valley-sunset-royalty-free-music/

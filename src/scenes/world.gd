@@ -74,7 +74,7 @@ enum Seasons {SPRING, SUMMER, AUTUMN, WINTER}
 
 var gameTime: int = 0
 
-var extremeWeatherThreshold: int = 10
+const extremeWeatherThreshold: int = 10
 
 var currentSeason: int = Seasons.SPRING
 var currentWeather: int = Weather.SUNNY
@@ -234,7 +234,7 @@ func _song_signal_to_weather(song: String) -> int:
 
 # Advances to the next season if applicable
 func _advance_season() -> void:
-    if (gameTime % 10 == 0):
+    if (gameTime % global.seasonTime == 0):
         if (currentSeason == Seasons.WINTER):
             get_tree().change_scene("res://src/scenes/menus/EndingScreen.tscn")
             return
