@@ -11,3 +11,6 @@ func _on_OptionsButton_pressed() -> void:
 
 func _on_QuitButton_pressed() -> void:
     get_tree().quit()
+
+func _on_HelpButton_pressed() -> void:
+    get_tree().change_scene("res://src/scenes/menus/HelpMenu.tscn")

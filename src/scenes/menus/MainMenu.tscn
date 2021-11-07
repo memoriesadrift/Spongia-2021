@@ -43,18 +43,26 @@ custom_fonts/font = SubResource( 1 )
 text = "Play"
 flat = true
 
-[node name="OptionsButton" type="Button" parent="MenuContainer"]
+[node name="HelpButton" type="Button" parent="MenuContainer"]
 margin_top = 104.0
 margin_right = 383.0
 margin_bottom = 204.0
+custom_fonts/font = SubResource( 2 )
+text = "Tutorial"
+flat = true
+
+[node name="OptionsButton" type="Button" parent="MenuContainer"]
+margin_top = 208.0
+margin_right = 383.0
+margin_bottom = 308.0
 custom_fonts/font = SubResource( 2 )
 text = "Options"
 flat = true
 
 [node name="QuitButton" type="Button" parent="MenuContainer"]
-margin_top = 208.0
+margin_top = 312.0
 margin_right = 383.0
-margin_bottom = 308.0
+margin_bottom = 412.0
 focus_neighbour_bottom = NodePath("../StartButton")
 custom_fonts/font = SubResource( 3 )
 text = "Quit"
@@ -70,9 +78,10 @@ rect_scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 3 )
 stretch_mode = 1
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_use_anchors_": true
 }
 
 [connection signal="pressed" from="MenuContainer/StartButton" to="." method="_on_StartButton_pressed"]
+[connection signal="pressed" from="MenuContainer/HelpButton" to="." method="_on_HelpButton_pressed"]
 [connection signal="pressed" from="MenuContainer/OptionsButton" to="." method="_on_OptionsButton_pressed"]
 [connection signal="pressed" from="MenuContainer/QuitButton" to="." method="_on_QuitButton_pressed"]
