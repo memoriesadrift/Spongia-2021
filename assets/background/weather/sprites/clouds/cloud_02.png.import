@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/1_cloud_01.png-7665d1914b12141b6f8838f28ef03370.stex"
+path="res://.import/cloud_02.png-7e56309faf198c2755fe0a9dcfe46880.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/background/weather/sprites/clouds/1_cloud_01.png"
-dest_files=[ "res://.import/1_cloud_01.png-7665d1914b12141b6f8838f28ef03370.stex" ]
+source_file="res://assets/background/weather/sprites/clouds/cloud_02.png"
+dest_files=[ "res://.import/cloud_02.png-7e56309faf198c2755fe0a9dcfe46880.stex" ]
 
 [params]
 
