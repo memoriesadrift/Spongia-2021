@@ -34,10 +34,47 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
+[node name="Ground" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="GroundTexture" type="TextureRect" parent="Ground"]
+margin_right = 3840.0
+margin_bottom = 2160.0
+rect_scale = Vector2( 0.5, 0.5 )
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Frills" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="FrillTexture" type="TextureRect" parent="Frills"]
+margin_right = 3840.0
+margin_bottom = 2160.0
+rect_scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 7 )
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
 [node name="Atmosphere" type="CanvasLayer" parent="."]
 layer = -1
 
 [node name="AtmosphereTexture" type="TextureRect" parent="Atmosphere"]
+margin_right = 3840.0
+margin_bottom = 2160.0
+rect_scale = Vector2( 0.5, 0.5 )
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="SunAtmosphere" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="SunAtmosphereTexture" type="TextureRect" parent="SunAtmosphere"]
 margin_right = 3840.0
 margin_bottom = 2160.0
 rect_scale = Vector2( 0.5, 0.5 )
@@ -55,19 +92,6 @@ margin_right = 3840.0
 margin_bottom = 2160.0
 rect_scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 8 )
-stretch_mode = 1
-__meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="Frills" type="CanvasLayer" parent="."]
-layer = -1
-
-[node name="FrillTexture" type="TextureRect" parent="Frills"]
-margin_right = 3840.0
-margin_bottom = 2160.0
-rect_scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 7 )
 stretch_mode = 1
 __meta__ = {
 "_edit_use_anchors_": true
