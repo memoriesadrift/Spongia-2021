@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://assets/fonts/ZenAntiqueSoft-Regular.ttf" type="DynamicFontData" id=1]
-[ext_resource path="res://assets/default_background.png" type="Texture" id=2]
+[ext_resource path="res://assets/background/seasons/summer/1_summer_river.png" type="Texture" id=2]
 [ext_resource path="res://src/scenes/menus/helpMenu.gd" type="Script" id=3]
+[ext_resource path="res://assets/background/seasons/spring/1_spring_flowers.png" type="Texture" id=4]
+[ext_resource path="res://assets/background/default_bg.png" type="Texture" id=5]
 
 [sub_resource type="DynamicFont" id=1]
 size = 38
@@ -36,9 +38,9 @@ On their wanderings across the planet, Ikahn finds a beautiful secluded valley k
 The valley is in need of their attention, and so Ikahn starts humming away a simple tune and lets the sound of the handpan echo through the valley, beckoning the forces of nature to the will of Ikahn.
 
 
-Press 1-6 to play a note on the handpan. Different play patterns will lead to different weather manifesting.
+Press A, S, D, J, K, or L to play a note on the handpan. Different play patterns will lead to different weather manifesting.
 Rapid taps on the handpan lead to wind, taps with pauses in between lead to rain, while two rapid taps followed by silence lead to sunny weather.
-Use your ability to control the weather to take care of the small countryside to the best of your ability.
+Use your ability to control the weather to take care of the small countryside to the best of your ability throughout the four seasons.
 "
 scroll_active = false
 __meta__ = {
@@ -68,8 +70,24 @@ layer = -1
 margin_right = 3840.0
 margin_bottom = 2160.0
 rect_scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 2 )
+texture = ExtResource( 5 )
 stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect3" type="TextureRect" parent="CanvasLayer"]
+margin_right = 1920.0
+margin_bottom = 1080.0
+texture = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

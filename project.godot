@@ -15,6 +15,10 @@ boot_splash/fullsize=false
 boot_splash/use_filter=false
 config/icon="res://icon.png"
 
+[autoload]
+
+global="*res://src/global.gd"
+
 [display]
 
 window/size/width=1920

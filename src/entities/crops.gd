@@ -157,6 +157,7 @@ func _incur_damage() -> void:
         if (weatherDamageAccumulators[key] > 10):
             weatherDamageAccumulators[key] -= 10
             damageLevel += 1
+            global.score -= 1
             _apply_damage_effects()
 
 func _apply_damage_effects():

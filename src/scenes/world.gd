@@ -234,7 +234,7 @@ func _song_signal_to_weather(song: String) -> int:
 
 # Advances to the next season if applicable
 func _advance_season() -> void:
-    if (gameTime % 60 == 0):
+    if (gameTime % 10 == 0):
         if (currentSeason == Seasons.WINTER):
             get_tree().change_scene("res://src/scenes/menus/EndingScreen.tscn")
             return

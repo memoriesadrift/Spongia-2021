@@ -52,18 +52,10 @@ custom_fonts/font = SubResource( 2 )
 text = "Tutorial"
 flat = true
 
-[node name="OptionsButton" type="Button" parent="MenuContainer"]
+[node name="QuitButton" type="Button" parent="MenuContainer"]
 margin_top = 208.0
 margin_right = 383.0
 margin_bottom = 308.0
-custom_fonts/font = SubResource( 2 )
-text = "Options"
-flat = true
-
-[node name="QuitButton" type="Button" parent="MenuContainer"]
-margin_top = 312.0
-margin_right = 383.0
-margin_bottom = 412.0
 focus_neighbour_bottom = NodePath("../StartButton")
 custom_fonts/font = SubResource( 3 )
 text = "Quit"
@@ -97,5 +89,4 @@ __meta__ = {
 
 [connection signal="pressed" from="MenuContainer/StartButton" to="." method="_on_StartButton_pressed"]
 [connection signal="pressed" from="MenuContainer/HelpButton" to="." method="_on_HelpButton_pressed"]
-[connection signal="pressed" from="MenuContainer/OptionsButton" to="." method="_on_OptionsButton_pressed"]
 [connection signal="pressed" from="MenuContainer/QuitButton" to="." method="_on_QuitButton_pressed"]
