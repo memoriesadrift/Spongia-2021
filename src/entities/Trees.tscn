@@ -1,0 +1,182 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://src/entities/trees.gd" type="Script" id=1]
+[ext_resource path="res://assets/sprites/trees/leafygreens/0_leafygreen_03.png" type="Texture" id=7]
+[ext_resource path="res://assets/sprites/trees/evergreens/0_evergreen_03.png" type="Texture" id=8]
+[ext_resource path="res://assets/sprites/trees/evergreens/0_evergreen_01.png" type="Texture" id=9]
+[ext_resource path="res://assets/sprites/trees/leafygreens/0_leafygreen_02.png" type="Texture" id=10]
+[ext_resource path="res://assets/sprites/trees/evergreens/0_evergreen_02.png" type="Texture" id=11]
+[ext_resource path="res://assets/sprites/trees/leafygreens/0_leafygreen_01.png" type="Texture" id=12]
+
+[node name="Trees" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="3Evergreen" type="TextureRect" parent="CanvasLayer"]
+margin_left = 616.854
+margin_top = 672.964
+margin_right = 762.854
+margin_bottom = 843.964
+texture = ExtResource( 8 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Evergreen" type="TextureRect" parent="CanvasLayer"]
+margin_left = 324.707
+margin_top = 588.52
+margin_right = 486.707
+margin_bottom = 750.52
+texture = ExtResource( 9 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Evergreen2" type="TextureRect" parent="CanvasLayer"]
+margin_left = 684.0
+margin_top = 724.0
+margin_right = 849.0
+margin_bottom = 889.0
+texture = ExtResource( 9 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Evergreen3" type="TextureRect" parent="CanvasLayer"]
+margin_left = 1002.92
+margin_top = 785.634
+margin_right = 1226.92
+margin_bottom = 1009.63
+texture = ExtResource( 9 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Evergreen4" type="TextureRect" parent="CanvasLayer"]
+margin_left = 1345.95
+margin_top = 867.665
+margin_right = 1560.95
+margin_bottom = 1082.67
+texture = ExtResource( 9 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="2Evergreen" type="TextureRect" parent="CanvasLayer"]
+margin_left = 505.627
+margin_top = 635.929
+margin_right = 629.627
+margin_bottom = 811.929
+texture = ExtResource( 11 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="2Evergreen3" type="TextureRect" parent="CanvasLayer"]
+margin_left = 1230.88
+margin_top = 737.005
+margin_right = 1441.88
+margin_bottom = 1036.0
+texture = ExtResource( 11 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="2Evergreen2" type="TextureRect" parent="CanvasLayer"]
+margin_left = 450.113
+margin_top = 562.272
+margin_right = 547.113
+margin_bottom = 700.272
+texture = ExtResource( 11 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="3Evergreen2" type="TextureRect" parent="CanvasLayer"]
+margin_left = 1130.59
+margin_top = 863.172
+margin_right = 1311.59
+margin_bottom = 1075.17
+texture = ExtResource( 8 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="3Leafygreen" type="TextureRect" parent="CanvasLayer"]
+margin_left = 1704.59
+margin_top = 504.673
+margin_right = 1856.59
+margin_bottom = 707.673
+texture = ExtResource( 7 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Leafygreen" type="TextureRect" parent="CanvasLayer"]
+margin_left = 1813.26
+margin_top = 638.57
+margin_right = 1850.26
+margin_bottom = 715.57
+texture = ExtResource( 12 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Leafygreen2" type="TextureRect" parent="CanvasLayer"]
+margin_left = 1872.65
+margin_top = 572.251
+margin_right = 1919.65
+margin_bottom = 670.251
+texture = ExtResource( 12 )
+expand = true
+flip_h = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="3Leafygreen2" type="TextureRect" parent="CanvasLayer"]
+margin_left = 1670.65
+margin_top = 637.998
+margin_right = 1831.65
+margin_bottom = 852.998
+texture = ExtResource( 7 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Leafygreen3" type="TextureRect" parent="CanvasLayer"]
+margin_left = 1596.27
+margin_top = 811.676
+margin_right = 1713.27
+margin_bottom = 1054.68
+texture = ExtResource( 12 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="2Leafygreen" type="TextureRect" parent="CanvasLayer"]
+margin_left = 1708.0
+margin_top = 780.0
+margin_right = 1817.0
+margin_bottom = 987.0
+texture = ExtResource( 10 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DamageTimer" type="Timer" parent="."]

@@ -1,65 +1,123 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://assets/default_background.png" type="Texture" id=1]
+[ext_resource path="res://assets/background/seasons/spring/0_spring_bg.png" type="Texture" id=1]
 [ext_resource path="res://src/entities/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://src/scenes/world.gd" type="Script" id=3]
-[ext_resource path="res://assets/fonts/ZenAntiqueSoft-Regular.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://assets/background/weather/sprites/sun/0_sun_base.png" type="Texture" id=4]
 [ext_resource path="res://src/entities/logical/RandomEventGenerator.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/audio/music/mixkit-valley-sunset-127.mp3" type="AudioStream" id=6]
-
-[sub_resource type="DynamicFont" id=1]
-size = 100
-font_data = ExtResource( 4 )
+[ext_resource path="res://assets/background/seasons/spring/1_spring_flowers.png" type="Texture" id=7]
+[ext_resource path="res://assets/background/seasons/spring/2_spring_river.png" type="Texture" id=8]
+[ext_resource path="res://assets/background/weather/sunny/sunny/0_sunny_atmosphere.png" type="Texture" id=9]
+[ext_resource path="res://src/entities/visual/Clouds.tscn" type="PackedScene" id=10]
+[ext_resource path="res://src/entities/Crops.tscn" type="PackedScene" id=11]
+[ext_resource path="res://assets/background/weather/sprites/sun/1_sun_brightness.png" type="Texture" id=12]
+[ext_resource path="res://src/entities/Trees.tscn" type="PackedScene" id=13]
 
 [node name="World" type="Node2D"]
 script = ExtResource( 3 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 99, 74.9181 )
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="RandomEventGenerator" parent="." instance=ExtResource( 5 )]
+
+[node name="Background" type="CanvasLayer" parent="."]
 layer = -1
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+[node name="BackgroundTexture" type="TextureRect" parent="Background"]
 margin_right = 3840.0
 margin_bottom = 2160.0
 rect_scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 1 )
 stretch_mode = 1
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_use_anchors_": true
 }
 
-[node name="WorldTimer" type="Timer" parent="."]
+[node name="Atmosphere" type="CanvasLayer" parent="."]
+layer = -1
 
-[node name="DebugExtremeWeather" type="RichTextLabel" parent="."]
-margin_left = 1134.19
-margin_top = 26.9181
-margin_right = 1890.19
-margin_bottom = 165.918
-custom_fonts/normal_font = SubResource( 1 )
-text = "No threats"
-fit_content_height = true
+[node name="AtmosphereTexture" type="TextureRect" parent="Atmosphere"]
+margin_right = 3840.0
+margin_bottom = 2160.0
+rect_scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 9 )
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="River" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="RiverTexture" type="TextureRect" parent="River"]
+margin_right = 3840.0
+margin_bottom = 2160.0
+rect_scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 8 )
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Frills" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="FrillTexture" type="TextureRect" parent="Frills"]
+margin_right = 3840.0
+margin_bottom = 2160.0
+rect_scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 7 )
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Sun" type="CanvasLayer" parent="."]
+layer = 0
+
+[node name="SunBrightness" type="TextureRect" parent="Sun"]
+modulate = Color( 1, 1, 1, 0.313726 )
+margin_right = 1920.0
+margin_bottom = 1080.0
+texture = ExtResource( 12 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RandomEventGenerator" parent="." instance=ExtResource( 5 )]
+[node name="SunSprite" type="CanvasLayer" parent="."]
+layer = 0
+
+[node name="SunTexture" type="TextureRect" parent="SunSprite"]
+margin_right = 1920.0
+margin_bottom = 1080.0
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Crops" parent="." instance=ExtResource( 11 )]
+
+[node name="Trees" parent="." instance=ExtResource( 13 )]
+
+[node name="Clouds" parent="." instance=ExtResource( 10 )]
+position = Vector2( 0, -0.00897217 )
+
+[node name="WorldTimer" type="Timer" parent="."]
+
+[node name="AnimationTimer" type="Timer" parent="."]
 
 [node name="BGMPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
 volume_db = -25.0
-[node name="DebugSong" type="RichTextLabel" parent="."]
-margin_left = 51.0
-margin_top = 206.766
-margin_right = 683.0
-margin_bottom = 361.766
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [connection signal="random_event_complete" from="." to="RandomEventGenerator" method="_on_World_random_event_complete"]
+[connection signal="weather_event_changed" from="." to="Crops" method="_on_World_weather_event_changed"]
+[connection signal="weather_event_changed" from="." to="Trees" method="_on_World_weather_event_changed"]
 [connection signal="song_played" from="Player" to="." method="_on_Player_song_played"]
-[connection signal="timeout" from="WorldTimer" to="." method="_on_WorldTimer_timeout"]
 [connection signal="random_event" from="RandomEventGenerator" to="." method="_on_RandomEventGenerator_random_event"]
+[connection signal="special_event_over" from="Crops" to="." method="_on_Crops_special_event_over"]
+[connection signal="special_event_over" from="Trees" to="." method="_on_Trees_special_event_over"]
+[connection signal="timeout" from="WorldTimer" to="." method="_on_WorldTimer_timeout"]
+[connection signal="timeout" from="AnimationTimer" to="." method="_on_AnimationTimer_timeout"]
 [connection signal="finished" from="BGMPlayer" to="." method="_on_BGMPlayer_finished"]

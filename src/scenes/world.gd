@@ -1,6 +1,58 @@
 extends Node2D
 
 signal random_event_complete()
+signal weather_event_changed(weatherEvent)
+
+const seasonalBackgrounds: Array = [
+    preload("res://assets/background/seasons/spring/0_spring_bg.png"),
+    preload("res://assets/background/seasons/summer/0_summer_bg.png"),
+    preload("res://assets/background/seasons/autumn/0_autumn_bg.png"),
+    preload("res://assets/background/seasons/winter/0_winter_bg.png"),
+   ]
+
+const seasonalRivers: Array = [
+    preload("res://assets/background/seasons/spring/2_spring_river.png"),
+    preload("res://assets/background/seasons/summer/1_summer_river.png"),
+    preload("res://assets/background/seasons/autumn/1_autumn_river.png"),
+    preload("res://assets/background/seasons/winter/1_winter_river.png"),
+   ]
+
+# TODO: Add drought / burning ground here when incorporating repsective parts
+const sunnyAtmosphereTextures: Array = [
+    preload("res://assets/background/weather/sunny/sunny/0_sunny_atmosphere.png"),
+]
+
+const rainyAtmosphereTextures: Array = [
+    preload("res://assets/background/weather/rainy/rainy/0_rainy_01.png"),
+    preload("res://assets/background/weather/rainy/rainy/1_rainy_01.png"),
+    preload("res://assets/background/weather/rainy/rainy/2_rainy_01.png"),
+]
+
+const windyAtmosphereTextures: Array = [
+    preload("res://assets/background/weather/sprites/wind/0_wind_01.png"),
+    preload("res://assets/background/weather/sprites/wind/1_wind_02.png"),
+    preload("res://assets/background/weather/sprites/wind/2_wind_03.png"),
+]
+
+const snowyAtmosphereTextures: Array = [
+    preload("res://assets/background/weather/rainy/snowy/0_snowy_01.png"),
+    preload("res://assets/background/weather/rainy/snowy/1_snowy_01.png"),
+    preload("res://assets/background/weather/rainy/snowy/2_snowy_01.png"),
+]
+
+const hailAtmosphereTextures: Array = [
+    preload("res://assets/background/weather/rainy/hail/0_hail_01.png"),
+    preload("res://assets/background/weather/rainy/hail/1_hail_01.png"),
+    preload("res://assets/background/weather/rainy/hail/2_hail_01.png"),
+]
+
+var atmosphereTextureAnimationFrame: int = 0
+
+var isHailing: bool = false
+
+const sunBrightnessSunny: Color = Color("50ffffff")
+const sunBrightnessDrought: Color = Color("a0ffffff")
+const sunBrightnessOff: Color = Color("00ffffff")
 
 enum Weather {SUNNY, RAINY, WINDY, SNOWY}
 enum Seasons {SPRING, SUMMER, AUTUMN, WINTER}
@@ -20,9 +72,15 @@ var weatherEffectAccumulators: Dictionary = {
    }
 
 onready var worldTimer: Timer = get_node("WorldTimer")
+onready var animationTimer: Timer = get_node("AnimationTimer")
+
 onready var bgmPlayer: AudioStreamPlayer = get_node("BGMPlayer")
-onready var weatherLabel: RichTextLabel = get_node("DebugExtremeWeather")
-onready var songLabel: RichTextLabel = get_node("DebugExtremeWeather")
+
+onready var bgTexture: TextureRect = get_node("Background/BackgroundTexture")
+onready var riverTexture: TextureRect = get_node("River/RiverTexture")
+onready var frillTexture: TextureRect = get_node("Frills/FrillTexture")
+onready var atmosphereTexture: TextureRect = get_node("Atmosphere/AtmosphereTexture")
+onready var sunBrightness: = get_node("Sun/SunBrightness")
 
 func _ready() -> void:
     worldTimer.set_wait_time(1)
@@ -40,39 +98,38 @@ func _on_RandomEventGenerator_random_event(event) -> void:
 
 func _check_weather_too_long() -> void:
     for key in weatherEffectAccumulators:
-        if (weatherEffectAccumulators[key] > 50):
-            weatherLabel.clear()
-            weatherLabel.add_text("Extreme weather effect: ")
+        if (weatherEffectAccumulators[key] > 20):
             match key:
                 Weather.SUNNY:
-                    weatherLabel.add_text("drought")
+                    sunBrightness.modulate = sunBrightnessDrought
+                    emit_signal("weather_event_changed", "drought")
                 Weather.RAINY:
-                    weatherLabel.add_text("flood")
+                    emit_signal("weather_event_changed", "flood")
                 Weather.WINDY:
-                    weatherLabel.add_text("hurricane")
+                    emit_signal("weather_event_changed", "hurricane")
                 Weather.SNOWY:
-                    weatherLabel.add_text("snow-in")
+                    emit_signal("weather_event_changed", "snow-in")
+
+func _on_Crops_special_event_over() -> void:
+    _random_event_done()
+
+func _on_Trees_special_event_over() -> void:
+    _random_event_done()
 
 func _random_event_done():
-    randomEventTime = 0
-    currentRandomEvent = ""
+    if (isHailing):
+        isHailing = false
     emit_signal("random_event_complete")
 
 func _process_random_event(event: String) -> void:
     match event:
-        "fire":
-            _process_fire_random_event()
-        # TODO: Add in a later PR
+        "fire_trees":
+            emit_signal("weather_event_changed", "fire_crops")
+        "fire_crops":
+            emit_signal("weather_event_changed", "fire_trees")
         "hail":
-            pass
-        "invaders":
-            pass
-
-func _process_fire_random_event() -> void:
-    if (currentWeather == Weather.RAINY):
-        randomEventTime += 1
-    if (randomEventTime > 10):
-        _random_event_done()
+            isHailing = true
+            emit_signal("weather_event_changed", "hail")
 
 # Helper function to adjust weather durations based on current weather
 func _adjust_weatherDuration(weather: int) -> void:
@@ -80,6 +137,8 @@ func _adjust_weatherDuration(weather: int) -> void:
 
     for key in weatherEffectAccumulators:
         if(weather != key and weatherEffectAccumulators[key] > 0):
+            if (weatherEffectAccumulators[key] == 50):
+                emit_signal("weather_event_changed", "extreme_weather_over")
             weatherEffectAccumulators[key] -= 1
 
 # Helper function to safely assign to currentWeather
@@ -92,12 +151,26 @@ func _change_Weather(to: int) -> void:
     match (to):
         Weather.SUNNY:
             newWeather = Weather.SUNNY
+            _toggle_AnimationTimer(0, false)
+            # TODO: Add custom setter function to detect drought
+            atmosphereTexture.set_texture(sunnyAtmosphereTextures[0])
+            sunBrightness.modulate = sunBrightnessSunny
+            emit_signal("weather_event_changed", "sunny")
         Weather.RAINY:
             newWeather = Weather.RAINY
+            _toggle_AnimationTimer(0.1, true)
+            sunBrightness.modulate = sunBrightnessOff
+            emit_signal("weather_event_changed", "rainy")
         Weather.WINDY:
             newWeather = Weather.WINDY
+            _toggle_AnimationTimer(0.3, true)
+            sunBrightness.modulate = sunBrightnessOff
+            emit_signal("weather_event_changed", "windy")
         Weather.SNOWY:
             newWeather = Weather.SNOWY
+            _toggle_AnimationTimer(0.1, true)
+            sunBrightness.modulate = sunBrightnessOff
+            emit_signal("weather_event_changed", "snowy")
         _:
             pass 
     currentWeather = newWeather
@@ -108,15 +181,14 @@ func _song_signal_to_weather(song: String) -> int:
         "sunny":
             return Weather.SUNNY
         "rainy":
+            if (currentSeason == Seasons.WINTER):
+                return Weather.SNOWY
             return Weather.RAINY
         "windy":
             return Weather.WINDY
-        "snowy":
-            return Weather.SNOWY
         _:
             assert(false, "Error: Unhandled song in _song_signal_to_weather, song: " + song)
             return -1 # Return an error value
-
 
 # Advances to the next season if applicable
 func _advance_season() -> void:
@@ -126,6 +198,10 @@ func _advance_season() -> void:
             currentSeason = Seasons.SPRING
             return
         currentSeason += 1
+        if (currentSeason != Seasons.SPRING):
+            frillTexture.hide()
+        bgTexture.set_texture(seasonalBackgrounds[currentSeason])
+        riverTexture.set_texture(seasonalRivers[currentSeason])
 
 # Performs actions that happen every second of the game
 func _advance_game_time() -> void:
@@ -133,16 +209,28 @@ func _advance_game_time() -> void:
     _adjust_weatherDuration(currentWeather)
     _advance_season()
     print(weatherEffectAccumulators)
-    songLabel.clear()
-    match currentWeather:
-        Weather.SUNNY:
-            songLabel.add_text("sun")
-        Weather.RAINY:
-            songLabel.add_text("rain")
-        Weather.WINDY:
-            songLabel.add_text("wind")
-        Weather.SNOWY:
-            songLabel.add_text("snow")
+
+func _toggle_AnimationTimer(timeout: float, enabled: bool):
+    if (!animationTimer.is_stopped() or !enabled):
+        animationTimer.stop()
+        return
+    animationTimer.set_wait_time(timeout)
+    animationTimer.start()
+
+func _on_AnimationTimer_timeout() -> void:
+    atmosphereTextureAnimationFrame = atmosphereTextureAnimationFrame + 1 if atmosphereTextureAnimationFrame < 2 else 0
+    if (currentWeather == Weather.RAINY):
+        if (isHailing):
+            atmosphereTexture.set_texture(hailAtmosphereTextures[atmosphereTextureAnimationFrame])
+        else:
+            atmosphereTexture.set_texture(rainyAtmosphereTextures[atmosphereTextureAnimationFrame])
+    if (currentWeather == Weather.WINDY):
+        atmosphereTexture.set_texture(windyAtmosphereTextures[atmosphereTextureAnimationFrame])
+    if (currentWeather == Weather.SNOWY):
+        if (isHailing):
+            atmosphereTexture.set_texture(hailAtmosphereTextures[atmosphereTextureAnimationFrame])
+        else:
+            atmosphereTexture.set_texture(snowyAtmosphereTextures[atmosphereTextureAnimationFrame])
 
 func _on_BGMPlayer_finished() -> void:
     bgmPlayer.play()

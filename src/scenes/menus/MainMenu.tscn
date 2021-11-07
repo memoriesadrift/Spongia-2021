@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://src/scenes/menus/mainMenu.gd" type="Script" id=1]
 [ext_resource path="res://assets/fonts/ZenAntiqueSoft-Regular.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://assets/default_background.png" type="Texture" id=3]
+[ext_resource path="res://assets/background/seasons/spring/2_spring_river.png" type="Texture" id=3]
+[ext_resource path="res://assets/background/default_bg.png" type="Texture" id=4]
 
 [sub_resource type="DynamicFont" id=1]
 size = 64
@@ -68,10 +69,23 @@ custom_fonts/font = SubResource( 3 )
 text = "Quit"
 flat = true
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="BackgroundCanvasLayer" type="CanvasLayer" parent="."]
 layer = -1
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+[node name="TextureRect" type="TextureRect" parent="BackgroundCanvasLayer"]
+margin_right = 3840.0
+margin_bottom = 2160.0
+rect_scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 4 )
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RiverCanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="TextureRect" type="TextureRect" parent="RiverCanvasLayer"]
 margin_right = 3840.0
 margin_bottom = 2160.0
 rect_scale = Vector2( 0.5, 0.5 )

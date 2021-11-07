@@ -19,6 +19,25 @@ enum Songs {
     RAINY,
 }
 
+const idleAnimations: Array = [
+    preload("res://assets/sprites/player/character/0_weathergod_idle.png"),
+    preload("res://assets/sprites/player/character/1_weathergod_idle.png"),
+    preload("res://assets/sprites/player/character/2_weathergod_idle.png"),
+]
+
+const panPlayingAnimations: Array = [
+    preload("res://assets/sprites/player/character/0_weathergod_play.png"),
+    preload("res://assets/sprites/player/character/1_weathergod_play.png"),
+    preload("res://assets/sprites/player/character/2_weathergod_play.png"),
+    preload("res://assets/sprites/player/character/3_weathergod_play.png"),
+    preload("res://assets/sprites/player/character/4_weathergod_play.png"),
+    preload("res://assets/sprites/player/character/5_weathergod_play.png"),
+]
+
+var animationFrame: int = 0
+var skipScheduledSpriteChange: bool = false
+var queuedPanPlayingAnimation: int = 0
+
 var currentNote: int = -1
 var currentSong: int = 0
 
@@ -45,6 +64,12 @@ var isNotePlaying: bool = false
 onready var notePlayer: AudioStreamPlayer2D = get_node("NotePlayer")
 onready var noteTimer: Timer = get_node("NoteTimer")
 onready var silenceTimer: Timer = get_node("SilenceTimer")
+onready var animationTimer: Timer = get_node("AnimationTimer")
+onready var playerSprite: Sprite = get_node("PlayerSprite")
+
+func _ready() -> void:
+    animationTimer.set_wait_time(0.6)
+    animationTimer.start()
 
 func _process(delta: float) -> void:
     var pressedKey: int = _get_played_note()
@@ -71,6 +96,10 @@ func _play_note(note: int):
         if (silenceTimer.is_stopped()):
             silenceTimer.start()
         return
+
+    playerSprite.set_texture(panPlayingAnimations[queuedPanPlayingAnimation])
+    queuedPanPlayingAnimation = queuedPanPlayingAnimation + 1 if queuedPanPlayingAnimation < panPlayingAnimations.size() - 1 else 0
+    skipScheduledSpriteChange = true
 
     silenceTimer.stop()
     noteTimer.set_wait_time(0.7)
@@ -162,3 +191,11 @@ func _get_played_note() -> int:
 func _check_noteBuffer_length() -> void:
     if (noteBuffer.size() > 5):
         noteBuffer.pop_back()
+
+# func to play animation
+func _on_AnimationTimer_timeout() -> void:
+    if (skipScheduledSpriteChange):
+        skipScheduledSpriteChange = false
+        return
+    animationFrame = animationFrame + 1 if animationFrame < idleAnimations.size() - 1 else 0
+    playerSprite.set_texture(idleAnimations[animationFrame])
