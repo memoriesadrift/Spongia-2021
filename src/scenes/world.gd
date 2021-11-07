@@ -27,7 +27,20 @@ const rainyAtmosphereTextures: Array = [
     preload("res://assets/background/weather/rainy/rainy/1_rainy_01.png"),
     preload("res://assets/background/weather/rainy/rainy/2_rainy_01.png"),
 ]
-var rainyAtmosphereTextureAnimationFrame: int = 0
+
+const windyAtmosphereTextures: Array = [
+    preload("res://assets/background/weather/sprites/wind/0_wind_01.png"),
+    preload("res://assets/background/weather/sprites/wind/1_wind_02.png"),
+    preload("res://assets/background/weather/sprites/wind/2_wind_03.png"),
+]
+
+const snowyAtmosphereTextures: Array = [
+    preload("res://assets/background/weather/rainy/snowy/0_snowy_01.png"),
+    preload("res://assets/background/weather/rainy/snowy/1_snowy_01.png"),
+    preload("res://assets/background/weather/rainy/snowy/2_snowy_01.png"),
+]
+
+var atmosphereTextureAnimationFrame: int = 0
 
 enum Weather {SUNNY, RAINY, WINDY, SNOWY}
 enum Seasons {SPRING, SUMMER, AUTUMN, WINTER}
@@ -136,9 +149,11 @@ func _change_Weather(to: int) -> void:
             emit_signal("weather_event_changed", "rainy")
         Weather.WINDY:
             newWeather = Weather.WINDY
+            _toggle_AnimationTimer(0.3, true)
             emit_signal("weather_event_changed", "windy")
         Weather.SNOWY:
             newWeather = Weather.SNOWY
+            _toggle_AnimationTimer(0.1, true)
             emit_signal("weather_event_changed", "snowy")
         _:
             pass 
@@ -150,11 +165,11 @@ func _song_signal_to_weather(song: String) -> int:
         "sunny":
             return Weather.SUNNY
         "rainy":
+            if (currentSeason == Seasons.WINTER):
+                return Weather.SNOWY
             return Weather.RAINY
         "windy":
             return Weather.WINDY
-        "snowy":
-            return Weather.SNOWY
         _:
             assert(false, "Error: Unhandled song in _song_signal_to_weather, song: " + song)
             return -1 # Return an error value
@@ -198,8 +213,14 @@ func _toggle_AnimationTimer(timeout: float, enabled: bool):
 
 func _on_AnimationTimer_timeout() -> void:
     if (currentWeather == Weather.RAINY):
-        rainyAtmosphereTextureAnimationFrame = rainyAtmosphereTextureAnimationFrame + 1 if rainyAtmosphereTextureAnimationFrame < rainyAtmosphereTextures.size() - 1 else 0
-        atmosphereTexture.set_texture(rainyAtmosphereTextures[rainyAtmosphereTextureAnimationFrame])
+        atmosphereTextureAnimationFrame = atmosphereTextureAnimationFrame + 1 if atmosphereTextureAnimationFrame < rainyAtmosphereTextures.size() - 1 else 0
+        atmosphereTexture.set_texture(rainyAtmosphereTextures[atmosphereTextureAnimationFrame])
+    if (currentWeather == Weather.WINDY):
+        atmosphereTextureAnimationFrame = atmosphereTextureAnimationFrame + 1 if atmosphereTextureAnimationFrame < windyAtmosphereTextures.size() - 1 else 0
+        atmosphereTexture.set_texture(windyAtmosphereTextures[atmosphereTextureAnimationFrame])
+    if (currentWeather == Weather.SNOWY):
+        atmosphereTextureAnimationFrame = atmosphereTextureAnimationFrame + 1 if atmosphereTextureAnimationFrame < snowyAtmosphereTextures.size() - 1 else 0
+        atmosphereTexture.set_texture(snowyAtmosphereTextures[atmosphereTextureAnimationFrame])
 
 func _on_BGMPlayer_finished() -> void:
     bgmPlayer.play()
