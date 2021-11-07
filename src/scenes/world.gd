@@ -17,6 +17,13 @@ const seasonalRivers: Array = [
     preload("res://assets/background/seasons/winter/1_winter_river.png"),
    ]
 
+const seasonalFloods: Array = [
+    preload("res://assets/background/weather/rainy/flood/0_flood_spring.png"),
+    preload("res://assets/background/weather/rainy/flood/1_flood_summer.png"),
+    preload("res://assets/background/weather/rainy/flood/2_flood_fall.png"),
+    preload("res://assets/background/weather/rainy/flood/3_flood_winter.png"),
+   ]
+
 const sunnyAtmosphereTextures: Array = [
     preload("res://assets/background/weather/sunny/sunny/0_sunny_atmosphere.png"),
     preload("res://assets/background/weather/sunny/drought/1_drought_atmosphere.png"),
@@ -112,6 +119,7 @@ func _check_weather_too_long() -> void:
                     groundTexture.set_texture(droughtGroundTexture)
                     emit_signal("weather_event_changed", "drought")
                 Weather.RAINY:
+                    riverTexture.set_texture(seasonalFloods[currentSeason])
                     emit_signal("weather_event_changed", "flood")
                 Weather.WINDY:
                     emit_signal("weather_event_changed", "hurricane")
@@ -151,6 +159,8 @@ func _adjust_weatherDuration(weather: int) -> void:
                     groundTexture.texture = null # supposedly this is how you delete textures...
                     sunBrightness.modulate = sunBrightnessSunny
                     sunAtmosphereTexture.set_texture(sunnyAtmosphereTextures[0])
+                if (key == Weather.RAINY):
+                    riverTexture.set_texture(seasonalRivers[currentSeason])
             weatherEffectAccumulators[key] -= 1
 
 # Helper function to safely assign to currentWeather
@@ -206,7 +216,7 @@ func _song_signal_to_weather(song: String) -> int:
 
 # Advances to the next season if applicable
 func _advance_season() -> void:
-    if (gameTime % 10 == 0):
+    if (gameTime % 20 == 0):
         if (currentSeason == Seasons.WINTER):
             # TODO: end the game here
             currentSeason = Seasons.SPRING
@@ -215,7 +225,10 @@ func _advance_season() -> void:
         if (currentSeason != Seasons.SPRING):
             frillTexture.hide()
         bgTexture.set_texture(seasonalBackgrounds[currentSeason])
-        riverTexture.set_texture(seasonalRivers[currentSeason])
+        if (weatherEffectAccumulators[Weather.RAINY] >= extremeWeatherThreshold):
+            riverTexture.set_texture(seasonalFloods[currentSeason])
+        else:
+            riverTexture.set_texture(seasonalRivers[currentSeason])
 
 # Performs actions that happen every second of the game
 func _advance_game_time() -> void:
