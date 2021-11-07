@@ -144,9 +144,11 @@ func _random_event_done():
     if (weatherEffectAccumulators[Weather.SUNNY] >= extremeWeatherThreshold):
         sunAtmosphereTexture.set_texture(sunnyAtmosphereTextures[1])
         sunBrightness.modulate = sunBrightnessDrought
+        groundTexture.set_texture(droughtGroundTexture)
     else:
         sunAtmosphereTexture.set_texture(sunnyAtmosphereTextures[0])
         sunBrightness.modulate = sunBrightnessSunny
+        groundTexture.texture = null
     
     emit_signal("random_event_complete")
 

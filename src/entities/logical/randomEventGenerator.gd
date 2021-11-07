@@ -28,8 +28,6 @@ func _process(delta: float) -> void:
 
         isEventHappening = true
         emit_signal("random_event", event)
-        print("event fired!")
-        print(event)
     else:
         bias += 2
 
