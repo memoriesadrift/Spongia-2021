@@ -21,6 +21,10 @@ script = ExtResource( 3 )
 
 [node name="RandomEventGenerator" parent="." instance=ExtResource( 5 )]
 
+[node name="Crops" parent="." instance=ExtResource( 11 )]
+
+[node name="Trees" parent="." instance=ExtResource( 13 )]
+
 [node name="Background" type="CanvasLayer" parent="."]
 layer = -1
 
@@ -119,10 +123,6 @@ texture = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="Crops" parent="." instance=ExtResource( 11 )]
-
-[node name="Trees" parent="." instance=ExtResource( 13 )]
 
 [node name="Clouds" parent="." instance=ExtResource( 10 )]
 position = Vector2( 0, -0.00897217 )

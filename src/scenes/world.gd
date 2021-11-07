@@ -72,7 +72,6 @@ var extremeWeatherThreshold: int = 10
 
 var currentSeason: int = Seasons.SPRING
 var currentWeather: int = Weather.SUNNY
-var currentRandomEvent: String = ""
 var randomEventTime: int = 0
 
 var weatherEffectAccumulators: Dictionary = {
@@ -107,7 +106,7 @@ func _on_Player_song_played(song) -> void: # song MUST be dynamically typed
     _change_Weather(_song_signal_to_weather(song))
 
 func _on_RandomEventGenerator_random_event(event) -> void:
-    currentRandomEvent = event
+    _process_random_event(event)
 
 func _check_weather_too_long() -> void:
     for key in weatherEffectAccumulators:
@@ -140,9 +139,9 @@ func _random_event_done():
 func _process_random_event(event: String) -> void:
     match event:
         "fire_trees":
-            emit_signal("weather_event_changed", "fire_crops")
-        "fire_crops":
             emit_signal("weather_event_changed", "fire_trees")
+        "fire_crops":
+            emit_signal("weather_event_changed", "fire_crops")
         "hail":
             isHailing = true
             emit_signal("weather_event_changed", "hail")
@@ -174,6 +173,7 @@ func _change_Weather(to: int) -> void:
         Weather.SUNNY:
             newWeather = Weather.SUNNY
             _toggle_AnimationTimer(0, false)
+            atmosphereTexture.texture = null # remove texture
             sunAtmosphereTexture.set_texture(sunnyAtmosphereTextures[0])
             sunBrightness.modulate = sunBrightnessSunny
             emit_signal("weather_event_changed", "sunny")
@@ -236,10 +236,9 @@ func _advance_game_time() -> void:
     _adjust_weatherDuration(currentWeather)
     _check_weather_too_long()
     _advance_season()
-    print(weatherEffectAccumulators)
 
 func _toggle_AnimationTimer(timeout: float, enabled: bool):
-    if (!animationTimer.is_stopped() or !enabled):
+    if (!enabled):
         animationTimer.stop()
         return
     animationTimer.set_wait_time(timeout)

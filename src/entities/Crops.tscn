@@ -147,4 +147,45 @@ __meta__ = {
 
 [node name="DamageTimer" type="Timer" parent="."]
 
+[node name="FireLayer" type="CanvasLayer" parent="."]
+
+[node name="1Fire1" type="TextureRect" parent="FireLayer"]
+margin_left = -3.36356
+margin_top = 23.5451
+margin_right = 1916.64
+margin_bottom = 1103.55
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="2Fire1" type="TextureRect" parent="FireLayer"]
+margin_left = 608.809
+margin_top = 50.4539
+margin_right = 2528.81
+margin_bottom = 1130.45
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Fire2" type="TextureRect" parent="FireLayer"]
+margin_left = 258.996
+margin_top = 89.1351
+margin_right = 2179.0
+margin_bottom = 1169.14
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="2Fire2" type="TextureRect" parent="FireLayer"]
+margin_left = 43.7266
+margin_top = 52.1357
+margin_right = 1963.73
+margin_bottom = 1132.14
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationTimer" type="Timer" parent="."]
+
 [connection signal="timeout" from="DamageTimer" to="." method="_on_DamageTimer_timeout"]
+[connection signal="timeout" from="AnimationTimer" to="." method="_on_AnimationTimer_timeout"]
