@@ -131,6 +131,7 @@ func _applyWeatherEffects(weatherEvent: String) -> void:
             # replace rain with hail
             if (currentSpecialEvent == "hail"):
                 weatherDamageAccumulators.hail += 1
+                weatherDamageAccumulators.fire -= 5
             else:
                 weatherDamageAccumulators.sun -= 1
                 weatherDamageAccumulators.fire -= 4
@@ -144,8 +145,10 @@ func _applyWeatherEffects(weatherEvent: String) -> void:
             # replace snow with hail
             if (currentSpecialEvent == "hail"):
                 weatherDamageAccumulators.hail += 1
+                weatherDamageAccumulators.fire -= 5
             else:
                 weatherDamageAccumulators.sun -= 1
+                weatherDamageAccumulators.fire -= 5
     
     # reset negative counters to 0
     for key in weatherDamageAccumulators:
