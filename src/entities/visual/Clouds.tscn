@@ -9,21 +9,22 @@
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Cloud1" type="TextureRect" parent="CanvasLayer"]
-margin_left = 110.184
-margin_top = 251.611
-margin_right = 283.184
-margin_bottom = 355.611
+margin_left = 159.784
+margin_top = 234.665
+margin_right = 346.784
+margin_bottom = 346.665
 rect_pivot_offset = Vector2( -36.2707, 64.7026 )
 texture = ExtResource( 1 )
+stretch_mode = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Cloud6" type="TextureRect" parent="CanvasLayer"]
-margin_left = 1680.67
-margin_top = 204.995
-margin_right = 1805.67
-margin_bottom = 279.995
+margin_left = 1630.59
+margin_top = 180.427
+margin_right = 1794.59
+margin_bottom = 278.427
 rect_pivot_offset = Vector2( -36.2707, 64.7026 )
 texture = ExtResource( 1 )
 expand = true
@@ -33,20 +34,21 @@ __meta__ = {
 }
 
 [node name="Cloud2" type="TextureRect" parent="CanvasLayer"]
-margin_left = 375.05
-margin_top = 88.9949
-margin_right = 622.05
-margin_bottom = 204.995
+margin_left = 400.189
+margin_top = 141.665
+margin_right = 598.189
+margin_bottom = 234.665
 texture = ExtResource( 3 )
+expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Cloud3" type="TextureRect" parent="CanvasLayer"]
-margin_left = 782.384
-margin_top = 204.995
-margin_right = 999.384
-margin_bottom = 303.995
+margin_left = 746.362
+margin_top = 180.427
+margin_right = 963.362
+margin_bottom = 279.427
 rect_pivot_offset = Vector2( 131.125, 96.4865 )
 texture = ExtResource( 2 )
 expand = true
@@ -55,10 +57,10 @@ __meta__ = {
 }
 
 [node name="Cloud4" type="TextureRect" parent="CanvasLayer"]
-margin_left = 1019.14
-margin_top = 28.0
-margin_right = 1159.14
-margin_bottom = 112.0
+margin_left = 937.935
+margin_top = 57.665
+margin_right = 1077.93
+margin_bottom = 141.665
 texture = ExtResource( 1 )
 expand = true
 __meta__ = {
@@ -66,10 +68,10 @@ __meta__ = {
 }
 
 [node name="Cloud5" type="TextureRect" parent="CanvasLayer"]
-margin_left = 1175.9
+margin_left = 1054.63
 margin_top = 180.427
-margin_right = 1388.9
-margin_bottom = 277.427
+margin_right = 1352.63
+margin_bottom = 316.427
 rect_pivot_offset = Vector2( 131.125, 96.4865 )
 texture = ExtResource( 2 )
 expand = true
