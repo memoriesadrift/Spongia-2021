@@ -64,9 +64,6 @@ onready var animationTimer: Timer = get_node("AnimationTimer")
 
 onready var bgmPlayer: AudioStreamPlayer = get_node("BGMPlayer")
 
-onready var weatherLabel: RichTextLabel = get_node("DebugExtremeWeather")
-onready var songLabel: RichTextLabel = get_node("DebugExtremeWeather")
-
 onready var bgTexture: TextureRect = get_node("Background/BackgroundTexture")
 onready var riverTexture: TextureRect = get_node("River/RiverTexture")
 onready var frillTexture: TextureRect = get_node("Frills/FrillTexture")
@@ -89,20 +86,14 @@ func _on_RandomEventGenerator_random_event(event) -> void:
 func _check_weather_too_long() -> void:
     for key in weatherEffectAccumulators:
         if (weatherEffectAccumulators[key] > 20):
-            weatherLabel.clear()
-            weatherLabel.add_text("Extreme weather effect: ")
             match key:
                 Weather.SUNNY:
-                    weatherLabel.add_text("drought")
                     emit_signal("weather_event_changed", "drought")
                 Weather.RAINY:
-                    weatherLabel.add_text("flood")
                     emit_signal("weather_event_changed", "flood")
                 Weather.WINDY:
-                    weatherLabel.add_text("hurricane")
                     emit_signal("weather_event_changed", "hurricane")
                 Weather.SNOWY:
-                    weatherLabel.add_text("snow-in")
                     emit_signal("weather_event_changed", "snow-in")
 
 func _on_Crops_special_event_over() -> void:
@@ -193,16 +184,6 @@ func _advance_game_time() -> void:
     _adjust_weatherDuration(currentWeather)
     _advance_season()
     print(weatherEffectAccumulators)
-    songLabel.clear()
-    match currentWeather:
-        Weather.SUNNY:
-            songLabel.add_text("sun")
-        Weather.RAINY:
-            songLabel.add_text("rain")
-        Weather.WINDY:
-            songLabel.add_text("wind")
-        Weather.SNOWY:
-            songLabel.add_text("snow")
 
 func _toggle_AnimationTimer(timeout: float, enabled: bool):
     if (!animationTimer.is_stopped() or !enabled):
