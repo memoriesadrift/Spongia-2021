@@ -16,6 +16,13 @@ func _process(delta: float) -> void:
     var eventGenerated: int = rng.randi_range(0, 100 - bias)
     if (!eventGenerated):
         var event: String = events[rng.randi_range(0, events.size() -1)]
+        if (event == "fire"):
+            var whereFire = rng.randi_range(0, 1)
+            if (whereFire):
+                event += "_trees"
+            else:
+                event += "_crops"
+
         isEventHappening = true
         emit_signal("random_event", event)
         print("event fired!")

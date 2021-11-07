@@ -105,14 +105,18 @@ func _check_weather_too_long() -> void:
 func _on_Crops_special_event_over() -> void:
     _random_event_done()
 
+func _on_Trees_special_event_over() -> void:
+    _random_event_done()
+
 func _random_event_done():
     emit_signal("random_event_complete")
 
 func _process_random_event(event: String) -> void:
     match event:
-        "fire":
-            # TODO: Trees OR Crops catch fire at random
-            emit_signal("weather_event_changed", "fire")
+        "fire_trees":
+            emit_signal("weather_event_changed", "fire_crops")
+        "fire_crops":
+            emit_signal("weather_event_changed", "fire_trees")
         "hail":
             emit_signal("weather_event_changed", "hail")
 

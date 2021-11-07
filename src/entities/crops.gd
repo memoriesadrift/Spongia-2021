@@ -124,7 +124,9 @@ func _safe_assign_weather_event(event: String) -> void:
             currentExtremeWeatherEvent = event
         "extreme_weather_over":
             currentExtremeWeatherEvent = ""
-        "fire":
+        "fire_trees":
+            pass
+        "fire_crops":
             currentSpecialEvent = event
         "hail":
             currentSpecialEvent = event

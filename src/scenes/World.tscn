@@ -117,6 +117,7 @@ volume_db = -25.0
 [connection signal="song_played" from="Player" to="." method="_on_Player_song_played"]
 [connection signal="random_event" from="RandomEventGenerator" to="." method="_on_RandomEventGenerator_random_event"]
 [connection signal="special_event_over" from="Crops" to="." method="_on_Crops_special_event_over"]
+[connection signal="special_event_over" from="Trees" to="." method="_on_Trees_special_event_over"]
 [connection signal="timeout" from="WorldTimer" to="." method="_on_WorldTimer_timeout"]
 [connection signal="timeout" from="AnimationTimer" to="." method="_on_AnimationTimer_timeout"]
 [connection signal="finished" from="BGMPlayer" to="." method="_on_BGMPlayer_finished"]
